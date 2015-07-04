@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+		<meta charset="UTF-8"/> 
+		<title>Pulseband App</title>
+		<link rel="stylesheet" href="css/reset.css">
+		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="css/main.css">
+		<script src="https://code.jquery.com/jquery-git.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+		<script src="js/vendors/d3.tip.js"></script>
+	</head>
+	<body>
+		<div class="nav-container">
+			<div class="logo">
+				<img src="img/pulseband-logo-3x.svg" alt="pulseband">	
+			</div>
+			<nav>
+				<ul>
+					<li><a href="#">Dashboard</a></li>
+					<li><a href="#">Doctor's Visit</a></li>
+					<li><a href="#">Settings</a></li>
+					<li><a href="#">Log Out</a></li>
+				</ul>		
+			</nav>
+		</div>
+		<h1>Dashboard</h1>
+		<div class="dash-top-container clearfix">
+			<div class="toggle-states">
+				<div><img src="img/hr_icon.gif" alt="HeartRate"></div>
+				<div><img src="img/bp_icon.gif" alt="BloodPressure"></div>
+				<div><img src="img/steps_icon.gif" alt="Steps"></div>
+				<div><img src="img/sleep_icon.gif" alt="Sleep"></div>
+			</div>
+			<div id="bar-chart">
+			</div>
+		</div>
+		<div class="dash-bottom-container clearfix">
+			<div class="placeholder">
+				
+			</div>
+			<div class="important-info">
+				<h2>Important Information</h2>
+				<p>We see that your HR was high and BP extremely low. This may be something you may want to discuss with your doctor.
+				</p>
+				<button>Learn More</button>
+				<button>Mark for Doctor's Visit</button>
+				<div class="notes clearfix">
+					Notes:
+					<textarea name="notes" id="notes" cols="25" rows="2"></textarea>
+					<button>Log</button>
+			</div>
+		</div>
+		
+
+
+		<script src="js/script.js"></script>
+	</body>
+</html>
+

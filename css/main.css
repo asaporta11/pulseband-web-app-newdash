@@ -1,0 +1,251 @@
+/********   GENERAL INFO   ********/
+*{
+	box-sizing: border-box;
+}
+
+html{
+	font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6, button, nav ul{
+	text-transform: uppercase;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+body{
+	font-family: 'Lato', sans-serif; 
+	font-size: 20px;
+	font-weight: 300; 
+	color: #000; 
+}
+
+/********   NAV   ********/
+
+.nav-container{
+	background-color: #09bcd3;
+	height: 70px;
+	width: 100%;
+	margin: 0 auto;
+	display: inline-block;
+}
+
+nav{
+	float:right;
+	margin-top: 25px;
+}
+
+nav ul li{
+	display: inline-block;
+	float: left;
+	overflow: auto;
+	margin-right: 20px;
+	padding: 0px 3px;
+}
+nav ul li a{
+	color: #fff;
+	text-decoration: none;
+}
+
+.logo{
+	float: left;
+	height: 60px;
+	width: 200px;
+	margin-top: 10px;
+}
+
+/********   DASH PAGE   ********/
+body{
+	background-color: #F3f3f3;
+}
+h1{
+	text-align: center;
+	margin: 20px 0px; 
+	font-size: 30px;
+	letter-spacing: 1.5px;
+}
+
+
+/**   Toggle States   **/
+.toggle-states{
+	margin: 10px 10px;
+	width: 20px;
+	height: 200px;
+	display: inline-block;
+	float: left;
+}
+.toggle-states div img{
+	width: 50px;
+}
+.toggle-states div{
+	margin: 10px;
+} 
+
+/**   Graph   **/
+.data-date{
+	text-align: center;
+	margin-top: 5px;
+}
+#bar-chart{
+	background-color: #fff;
+	position: relative;
+	width: 900px;
+	height: 500px;
+	display: inline-block;
+	float: left;
+	margin-left: 70px;
+	color: #000;
+	border-radius: 6px;
+	border: 2px solid #09bcd3;
+}
+
+/* #graph-area-bar{
+ 	background-color: #fff;
+	position: relative;
+	width: 900px;
+	height: 500px;
+	display: inline-block;
+	float: left;
+	margin-left: 70px;
+	color: #000;
+	border-radius: 6px;
+	border: 2px solid #09bcd3;
+ }*/
+
+#bar-chart p{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#bar-chart svg{
+	width: 100%;
+	height: 100%;
+}
+#bar-chart svg rect{
+	fill: #09bcd3;
+}
+.graph-area-bar svg{
+	width: 100%;
+	height: 100%;
+}
+
+svg text{
+	font-size: 14px;
+	font-family: 'Lato', sans-serif;
+	fill: #000;
+}
+
+.axis{
+	stroke: black;
+	fill: none;
+} /*changed this to stroke: 0px; and then it drew nothing, then did stroke: black; and it looks good */
+
+/**   Important Info   **/
+.important-info{
+	background-color: #A8A8A8;
+	display: inline-block;
+	margin: 20px 0px;
+	height: 400px;
+	width: 300px;
+	color: white;
+	border-radius: 6px;
+}
+.important-info button{
+	text-transform: lowercase;
+	background-color: rgba(255,255,255, .5);
+	border: none;
+	border-radius: 25px;
+}
+.important-info p{
+	font-size: 18px;
+}
+.important-info h2{
+	text-transform: lowercase;
+	font-size: 24px;
+	text-align: center;
+}
+.notes{
+	padding: 10px;
+	background-color: transparent;
+	width: 250px;
+}
+.clearfix:after{
+	display: table;
+	content: '';
+	clear: both;
+}
+
+/**   2nd Level Dash   **/
+
+.calendar{
+	background-color: #A8A8A8;
+	width: 200px;
+	height: 400px;
+	display: inline-block;
+	margin-top: 10px;
+	margin-left: 20px;
+	border-radius: 6px;
+}
+.breakdown{
+	background-color: #A8A8A8;
+	width: 300px;
+	height: 400px;
+	display: inline-block;
+	margin-top: 10px;
+	margin-left: 10px;
+	border-radius: 6px;
+}
+.placeholder{
+	width: 92px;
+	display: inline-block;
+}
+
+
+/**** MORE STYLING ****/
+/*#gradient{
+  /* background: -webkit-linear-gradient(#3d9fcd, #455ba5); /* For Safari 5.1 to 6.0 */
+  /*background: -o-linear-gradient(#3d9fcd, #455ba5);  /* For Opera 11.1 to 12.0 */
+  /*background: -moz-linear-gradient(#3d9fcd, #455ba5); /* For Firefox 3.6 to 15 */
+  /*background: linear-gradient(#3d9fcd, #455ba5); /* Standard syntax */
+/*}*/
+
+
+/****     GRAPH INTERACTIONS     ****/
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+.focus circle{
+	fill: none;
+	stroke: black;
+} 
+
+
+
+
+
+
+
+/*svg.line-graph text {
+	cursor: default;
+}
+
+svg.line-graph .hover-line {
+	stroke: #6E7B8B;
+}
+
+svg.line-graph .hide {
+	opacity: 0;
+}*/
+
+/*.graph-area div{
+  width: 60px;
+  position: absolute;
+  top: 0;
+  height: 400px;
+  background-color: black;
+  transform: translateX(-50%);
+  opacity: 0.2;
+}*/
