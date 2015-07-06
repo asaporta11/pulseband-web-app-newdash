@@ -1,5 +1,5 @@
-var width = parseInt($('#bar-chart').css('width'));
-var height = parseInt($('#bar-chart').css('height'));
+var svgWidth = parseInt($('#bar-chart').css('width'));
+var svgHeight = parseInt($('#bar-chart').css('height'));
 
 var margins = {
     left: 100,
@@ -10,12 +10,12 @@ var margins = {
 
 
 var dataset = [
-    {bp: 129, name: "Blood Pressure"}
-    // , {hr: 40, name: "Heart Rate"},
-    // {act: 45, name: "Activity"},
-    // {chl: 50, name: "Cholesterol"},
-    // {bs: 60, name: "Blood Sugars"},
-    // {bmi: 40, name: "BMI"}
+    {val: 129, name: "Blood Pressure", max: 200},
+    {val: 40, name: "Heart Rate", max: 200},
+    {val: 4500, name: "Activity", max: 20000},
+    {val: 50, name: "Cholesterol", max: 200},
+    {val: 60, name: "Blood Sugars", max: 200},
+    {val: 18, name: "BMI", max: 30}
 ];
 
 var dataset2 = [
@@ -30,20 +30,32 @@ var dataset2 = [
 
 
 var svg = d3.select("#bar-chart").append("svg")
-            .attr("width", width - (margins.left + margins.right))
-            .attr("height", height - (margins.top + margins.bottom));
+            .attr("width", svgWidth - (margins.left + margins.right))
+            .attr("height", svgHeight - (margins.top + margins.bottom));
 
+var xAxis = svg.append("g");
+var xScale = d3.scale.ordinal(); 
+
+
+xScale.domain(dataset.map(function(d){
+        return d.name;
+    }))
+    .rangeBands([margins.left, (svgWidth - margins.right)], .1)
+
+xAxis.attr("class","axis")
+        .attr("transform", "translate(0," + (svgHeight - margins.top) + ")")
+        .call(d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom"))
 
 d3.chart("rectGraph", {
 
   initialize: function() {
     var chart = this; 
     chart.yScale = d3.scale.linear();
-    chart.xScale = d3.scale.ordinal(); 
-    chart.xAxis = this.base.append("g");
-    chart.yAxis = this.base.append("g");
+
     // Initialize tooltip
-    var tip = d3.tip().html(function(d) { return d.bp + " bpm systolic"; });
+    var tip = d3.tip().html(function(d) { return d.val + " bpm systolic"; });
 
     //tooltip
     svg.call(tip)
@@ -70,20 +82,18 @@ d3.chart("rectGraph", {
         // paint new elements
         "merge": function() {
             
-          this.attr("x", function(d){
-                return chart.xScale(d.name);
-            })
-            .attr("width", chart.xScale.rangeBand())
+          this.attr("x", 0)//x pos set to 0 for each chart
+            .attr("width", chart._width)
             .attr("y", chart._height - margins.bottom) //set y value to 0 on axis
             .attr("height", 0); //set height to 0 (state before transition)
 
 
             this.transition() //initiates transition
                 .attr("y", function(d){
-                    return chart.yScale(d.bp); //specifies y value to transition to
+                    return chart.yScale(d.val); //specifies y value to transition to
                 })
                 .attr("height",function(d){
-                    return chart._height - margins.bottom - chart.yScale(d.bp); //specifies height value to transition to 
+                    return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
                 })//move to after transition because this is the final height
 
              this.on('mouseover', tip.show)
@@ -95,31 +105,9 @@ d3.chart("rectGraph", {
   },
 
   transform: function(data){
-    var dataValues = data.map(function(d){
-        return d.bp;
-    });
-
-    chart.xScale.domain(data.map(function(d){
-            return d.name;
-        }))
-        .rangeBands([margins.left, chart._width - margins.right], 0.1)
-
-    chart.yScale.domain([0, 200])
+    console.log(data[0].max);
+    chart.yScale.domain([0, data[0].max])
             .range([chart._height - margins.bottom, margins.top]);
-
-    
-    chart.xAxis.attr("class","axis")
-        .attr("transform", "translate(0," + (chart._height - margins.top) + ")")
-        .call(d3.svg.axis()
-            .scale(chart.xScale)
-            .orient("bottom"))
-
-    chart.yAxis.attr("class", "axis")
-        .attr("transform", "translate(" + margins.left + ",0)")
-        .call(d3.svg.axis()
-            .scale(chart.yScale)
-                .orient("left"))
-
     return data; 
   },
 
@@ -141,10 +129,12 @@ d3.chart("rectGraph", {
   }
 });
 // create an instance of the chart on a d3 selection
-var chart = svg.chart("rectGraph")
-  .width(width)
-  .height(height);
+var chart = svg.append("g")
+  .attr("transform", "translate(" + xScale(dataset[0].name) + ", 0)")
+  .chart("rectGraph")
+  .width(xScale.rangeBand())
+  .height(svgHeight);
 
 // render it with some data
-chart.draw(dataset);
+chart.draw([dataset[0]]);
 
