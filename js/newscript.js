@@ -93,7 +93,7 @@ d3.chart("rectGraph", {
 
             this.transition() //initiates transition
                 .delay(function(data, i){ return i * 20; })
-                .duration(1000)
+                .duration(1500)
                 .ease("elastic")
                 .attr("y", function(d){
                     return chart.yScale(d.val); //specifies y value to transition to
@@ -132,8 +132,10 @@ d3.chart("rectGraph", {
     this._height = newHeight;
     return this;
   }
+
 });
 
+//draws each bar for each item in the dataset
 for(i=0; i < dataset.length; i++){
   var chart = svg.append("g")
     .attr("transform", "translate(" + xScale(dataset[i].name) + ", 0)")
@@ -142,27 +144,113 @@ for(i=0; i < dataset.length; i++){
     .height(svgHeight);
     chart.draw([dataset[i]]);
 }
+var yScale = d3.scale.linear();
+      yScale.domain([0, dataset[0].max])
+            .range([svgHeight - margins.bottom, margins.top]);
+
+    // when the input range changes update value 
+    d3.select("#nValue").on("input", function() {
+      update(+this.value);
+    });
+
+    // Initial update value 
+    update(dataset[0].val);
+    
+    // d3.select("#nValue-value").text(dataset[0].val);
+    d3.select("#nValue").property("value", dataset[0].val);
 
 
-//update input 
-d3.select("#nRadius").on("input", function() {
-  update(+this.value);
-});
 
-// Initial starting radius of the circle 
-update(dataset[0].val);
+    // adjust the text
+    function update(nValue) {
+      console.log("nValue: " + nValue);
+      console.log("yScale(dataset[0].val): " + yScale(dataset[0].val) );
+      console.log("yScale(nValue): " + yScale(nValue));
+      console.log(yScale(dataset[0].val) - yScale(nValue));
+      // adjust the value
+      svg.select("rect")
+        .transition() //initiates transition
+        .delay(function(data, i){ return i * 20; })
+        .duration(1500)
+        .ease("elastic")
+        .attr("height", svgHeight - margins.bottom - yScale(nValue))
+        .attr("y", function() {   
+          return yScale(nValue);  
+        })
+    } 
 
-// update the elements
-function update(nRadius) {
 
-  // adjust the text on the range slider
-  d3.select("#nRadius-value").text(nRadius);
-  d3.select("#nRadius").property("value", nRadius);
+  // .attr("y", function(d){
+  //                   return chart.yScale(d.val); //specifies y value to transition to
+  //               })
+  //               .attr("height",function(d){
+  //                   return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
+  //               })//move to after transition because this is the final height
 
-  // update the circle radius
-  holder.selectAll("rect") 
-    .attr("y", nRadius);
-}
+
+// function update(nValue) {
+//       console.log("nValue: " + nValue);
+//       console.log("yScale(dataset[0].val): " + yScale(dataset[0].val) );
+//       console.log("yScale(nValue): " + yScale(nValue));
+//       console.log(yScale(dataset[0].val) - yScale(nValue));
+//       // adjust the value
+//       svg.select("rect") 
+//         .attr("height", yScale(nValue))
+//         .attr("y", function() {   
+//           svgHeight + margins.bottom + yScale(dataset[0].val);  
+//         })
+
+
+
+    //was last item on y "- yScale(nValue)""
+
+// .attr("y", function(d){
+//         return chart.yScale(d.val); //specifies y value to transition to
+//     })
+// .attr("height",function(d){
+//         return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
+//     })//move to after transition because this is the final height
+
+    // return Math.abs(yScale(dataset[0].val) - yScale(nValue));
+
+    //chart._height - margins.bottom - chart.yScale(d.val);
+
+    // function update(nValue) {
+
+    //   // adjust the value
+    //   svg.select("rect") 
+    //     .attr("height", nValue)
+    //     .attr("transform", "translate(0,"+ yScale(nValue) +")");
+    // }
+
+
+ // function update(nValue) {
+
+ //      // adjust the value
+ //      svg.select("rect") 
+ //        .attr("transform", "translate(0,"+ nValue +")");
+ //    }
+
+
+// //update input 
+// d3.select("#nRadius").on("input", function() {
+//   update(+this.value);
+// });
+
+// // Initial starting radius of the circle 
+// update(dataset[0].val);
+
+// // update the elements
+// function update(nRadius) {
+
+//   // adjust the text on the range slider
+//   d3.select("#nRadius-value").text(nRadius);
+//   d3.select("#nRadius").property("value", nRadius);
+
+//   // update the circle radius
+//   holder.selectAll("rect") 
+//     .attr("y", nRadius);
+// }
 
 
 // create an instance of the chart on a d3 selection
