@@ -10,12 +10,12 @@ var margins = {
 
 
 var dataset = [
-    {val: 129, name: "Blood Pressure", max: 200},
-    {val: 40, name: "Heart Rate", max: 200},
-    {val: 4500, name: "Activity", max: 20000},
-    {val: 50, name: "Cholesterol", max: 200},
-    {val: 60, name: "Blood Sugars", max: 200},
-    {val: 18, name: "BMI", max: 30}
+    {val: 129, name: "Blood Pressure", max: 200, unit: "systolic"},
+    {val: 70, name: "Heart Rate", max: 200, unit: "bpm" },
+    {val: 4500, name: "Activity", max: 20000, unit: "steps" },
+    {val: 50, name: "Cholesterol", max: 200, unit: "mmHg"},
+    {val: 60, name: "Blood Sugars", max: 200, unit: "mmHg"},
+    {val: 18, name: "BMI", max: 30, unit: "BMI"}
 ];
 
 var dataset2 = [
@@ -36,6 +36,7 @@ var svg = d3.select("#bar-chart").append("svg")
 var xAxis = svg.append("g");
 var xScale = d3.scale.ordinal(); 
 
+var i;
 
 xScale.domain(dataset.map(function(d){
         return d.name;
@@ -48,6 +49,8 @@ xAxis.attr("class","axis")
             .scale(xScale)
             .orient("bottom"))
 
+
+
 d3.chart("rectGraph", {
 
   initialize: function() {
@@ -55,7 +58,7 @@ d3.chart("rectGraph", {
     chart.yScale = d3.scale.linear();
 
     // Initialize tooltip
-    var tip = d3.tip().html(function(d) { return d.val + " bpm systolic"; });
+    var tip = d3.tip().html(function(d) { return d.val + " " + d.unit; });
 
     //tooltip
     svg.call(tip)
@@ -89,6 +92,9 @@ d3.chart("rectGraph", {
 
 
             this.transition() //initiates transition
+                .delay(function(data, i){ return i * 20; })
+                .duration(1000)
+                .ease("elastic")
                 .attr("y", function(d){
                     return chart.yScale(d.val); //specifies y value to transition to
                 })
@@ -105,7 +111,6 @@ d3.chart("rectGraph", {
   },
 
   transform: function(data){
-    console.log(data[0].max);
     chart.yScale.domain([0, data[0].max])
             .range([chart._height - margins.bottom, margins.top]);
     return data; 
@@ -128,13 +133,45 @@ d3.chart("rectGraph", {
     return this;
   }
 });
+
+for(i=0; i < dataset.length; i++){
+  var chart = svg.append("g")
+    .attr("transform", "translate(" + xScale(dataset[i].name) + ", 0)")
+    .chart("rectGraph")
+    .width(xScale.rangeBand())
+    .height(svgHeight);
+    chart.draw([dataset[i]]);
+}
+
+
+//update input 
+d3.select("#nRadius").on("input", function() {
+  update(+this.value);
+});
+
+// Initial starting radius of the circle 
+update(dataset[0].val);
+
+// update the elements
+function update(nRadius) {
+
+  // adjust the text on the range slider
+  d3.select("#nRadius-value").text(nRadius);
+  d3.select("#nRadius").property("value", nRadius);
+
+  // update the circle radius
+  holder.selectAll("rect") 
+    .attr("y", nRadius);
+}
+
+
 // create an instance of the chart on a d3 selection
-var chart = svg.append("g")
-  .attr("transform", "translate(" + xScale(dataset[0].name) + ", 0)")
-  .chart("rectGraph")
-  .width(xScale.rangeBand())
-  .height(svgHeight);
+// var chart = svg.append("g")
+//   .attr("transform", "translate(" + xScale(dataset[0].name) + ", 0)")
+//   .chart("rectGraph")
+//   .width(xScale.rangeBand())
+//   .height(svgHeight);
 
 // render it with some data
-chart.draw([dataset[0]]);
+// chart.draw([dataset[0]]);
 
