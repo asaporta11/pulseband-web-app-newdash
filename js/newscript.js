@@ -84,6 +84,11 @@ d3.chart("rectGraph", {
 
         // paint new elements
         "merge": function() {
+
+          //for draggable beh
+          var drag = d3.behavior.drag()
+            .origin(function(d) { return d.val; }) //.origin()
+            .on("drag", dragmove);
             
           this.attr("x", 0)//x pos set to 0 for each chart
             .attr("width", chart._width)
@@ -100,7 +105,23 @@ d3.chart("rectGraph", {
                 })
                 .attr("height",function(d){
                     return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
-                })//move to after transition because this is the final height
+                })//move to after transition since this is the final height
+
+            this.call(drag)
+
+                //need to call above on element .call(drag); 
+                //drag
+                function dragmove(d) {
+                  console.log("d3.event.sourceEvent.y: " + d3.event.sourceEvent.y);
+                  console.log("svgHeight: " + svgHeight);
+                  console.log("margins.bottom: " + margins.bottom);                
+                  d3.select(this)
+                    .attr("y", function(d) { return d3.event.sourceEvent.y; })
+                    .attr("height", (svgHeight - margins.bottom - d3.event.sourceEvent.y ));
+                      //.attr("height", (svgHeight - margins.bottom - d3.event.sourceEvent.y ));
+                      //d.y = yScale(parseInt(d3.event.y))
+                      // .attr("cy", d.y = Math.max(radius, Math.min(height - radius, d3.event.y)));
+                }
 
              this.on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
@@ -144,30 +165,27 @@ for(i=0; i < dataset.length; i++){
     .height(svgHeight);
     chart.draw([dataset[i]]);
 }
+
 var yScale = d3.scale.linear();
       yScale.domain([0, dataset[0].max])
             .range([svgHeight - margins.bottom, margins.top]);
+
+
 
     // when the input range changes update value 
     d3.select("#nValue").on("input", function() {
       update(+this.value);
     });
 
-    // Initial update value 
-    update(dataset[0].val);
-    
-    // d3.select("#nValue-value").text(dataset[0].val);
+
+
+    //the real initial update value 
     d3.select("#nValue").property("value", dataset[0].val);
 
-
+  
 
     // adjust the text
     function update(nValue) {
-      console.log("nValue: " + nValue);
-      console.log("yScale(dataset[0].val): " + yScale(dataset[0].val) );
-      console.log("yScale(nValue): " + yScale(nValue));
-      console.log(yScale(dataset[0].val) - yScale(nValue));
-      // adjust the value
       svg.select("rect")
         .transition() //initiates transition
         .delay(function(data, i){ return i * 20; })
@@ -179,6 +197,11 @@ var yScale = d3.scale.linear();
         })
     } 
 
+
+
+
+
+  // d3.select("#nValue").property("value", dataset[0].val);
 
   // .attr("y", function(d){
   //                   return chart.yScale(d.val); //specifies y value to transition to
