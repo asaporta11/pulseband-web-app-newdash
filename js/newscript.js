@@ -159,6 +159,7 @@ d3.chart("rectGraph", {
 //draws each bar for each item in the dataset
 for(i=0; i < dataset.length; i++){
   var chart = svg.append("g")
+    .classed("rect"+i, true)
     .attr("transform", "translate(" + xScale(dataset[i].name) + ", 0)")
     .chart("rectGraph")
     .width(xScale.rangeBand())
@@ -166,34 +167,60 @@ for(i=0; i < dataset.length; i++){
     chart.draw([dataset[i]]);
 }
 
-var yScale = d3.scale.linear();
-      yScale.domain([0, dataset[0].max])
-            .range([svgHeight - margins.bottom, margins.top]);
 
 
+var yScaleArray = [];
+
+function initYscales () {
+  for (var i=0; i<dataset.length; i++){
+    var yScale = d3.scale.linear();
+    yScale.domain([0, dataset[i].max])
+          .range([svgHeight - margins.bottom, margins.top]);    
+    yScaleArray.push(yScale);
+  }
+
+}
+initYscales();
 
     // when the input range changes update value 
     d3.select("#nValue").on("input", function() {
-      update(+this.value);
+
+      update(+this.value, 0);
     });
 
-
+    d3.select("#oValue").on("input", function() {
+      update(+this.value, 1);
+    });
+    d3.select("#pValue").on("input", function() {
+      update(+this.value, 2);
+    });    
 
     //the real initial update value 
     d3.select("#nValue").property("value", dataset[0].val);
+    d3.select("#oValue").property("value", dataset[1].val);
+    d3.select("#pValue").property("value", dataset[2].val);
 
   
 
     // adjust the text
-    function update(nValue) {
-      svg.select("rect")
+    function update(nValue, index) {
+
+      console.log("update");
+      console.log(svg.select((".rect"+index)));
+
+      var node = $(".rect" + index).find("rect")[0];
+      // console.log(node);
+
+      //node =  svg.select((".rect" + index)).select("g").select("rect");
+      //console.log(node);
+      d3.select((".rect" + index)).select("g").select("rect")
         .transition() //initiates transition
         .delay(function(data, i){ return i * 20; })
         .duration(1500)
         .ease("elastic")
-        .attr("height", svgHeight - margins.bottom - yScale(nValue))
+        .attr("height", svgHeight - margins.bottom - yScaleArray[index](nValue))
         .attr("y", function() {   
-          return yScale(nValue);  
+          return yScaleArray[index](nValue);  
         })
     } 
 
