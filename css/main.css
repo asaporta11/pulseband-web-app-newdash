@@ -141,6 +141,35 @@ svg text{
 	fill: none;
 } /*changed this to stroke: 0px; and then it drew nothing, then did stroke: black; and it looks good */
 
+#bar-chart svg g g rect {
+	position: relative;
+}
+/*#bar-chart svg g g rect:before{
+	content: ' ';
+	position: absolute;
+	display: block;
+	height: 0;
+	width: 100px;
+	border: solid black 2px;
+	color: black;
+	top: 5px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 100000;
+}
+
+line {
+	position: absolute;
+	display: block;
+	height: 5px;
+	width: 100px;
+	border: solid black 2px;
+	color: black;
+	top: 5px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 100000;
+}*/
 /**   Important Info   **/
 .important-info{
 	background-color: #A8A8A8;
@@ -222,6 +251,10 @@ svg text{
 	stroke: black;
 } 
 
+.line-style{
+	fill: black;
+	stroke: black;
+}
 
 
 

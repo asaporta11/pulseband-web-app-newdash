@@ -74,7 +74,7 @@ d3.chart("rectGraph", {
           .data(data);
       },
 
-      // insert actual circles
+      // insert actual bars
       insert: function() {
         return this.append("rect");
       },
@@ -107,20 +107,80 @@ d3.chart("rectGraph", {
                     return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
                 })//move to after transition since this is the final height
 
+            d3.select(".rect"+i)
+                .append("g")
+                .append("line")
+                .attr("x1", 20)
+                .attr("y1", function(d){
+                      return chart._height - margins.bottom - dataset[i].val; })
+                .attr("x2", 80)
+                .attr("y2", function(d){
+                      return chart._height - margins.bottom - dataset[i].val; }) 
+                .attr("stroke", "black") 
+                .attr("stroke-width", 2); 
+
+            // for (var i=0; i<dataset.length; i++){
+            //   d3.select(".rect"+i)
+            //       .append("g")
+            //       .append("line")
+            //       .attr("x1", 20)
+            //       .attr("y1", function(d){
+            //             return chart._height - margins.bottom - dataset[i].val; })
+            //       .attr("x2", 50)
+            //       .attr("y2", function(d){
+            //             return chart._height - margins.bottom - dataset[i].val; }) 
+            //       .attr("stroke", "black") 
+            //       .attr("stroke-width", 2);
+            // }
+
+ 
+
+
+              // this.append("g")
+              // .append("line")
+              // .attr("x1", 20)
+              // .attr("y1", function(d){
+              //       return chart._height - margins.bottom - chart.yScale(d.val); })
+              // .attr("x2", 50)
+              // .attr("y2", function(d){
+              //       return chart._height - margins.bottom - chart.yScale(d.val); }) 
+              // .attr("stroke", "black") 
+              // .attr("stroke-width", 5);
+
+            // this.selectAll("g rect")
+            //   .append("line");
+
+              // this.append("line")
+              // .attr("x1", 20)
+              // .attr("y1", 100)
+              // .attr("x2", 50)
+              // .attr("y2", 100) 
+              // .attr("stroke", "black") 
+              // .attr("stroke-width", 5);
+
+            
+
+            // this.selectAll("rect")
+            //     .append("line")
+            //     .style("stroke", "black")
+            //     .style("stroke-width", 20)
+            //     .style("stroke-linecap", "butt")
+            //     .attr("x1", 100)
+            //     .attr("y1", 100)
+            //     .attr("x2", 200)
+            //     .attr("y2", 200);
+                
             this.call(drag)
 
-                //need to call above on element .call(drag); 
-                //drag
                 function dragmove(d) {
-                  console.log("d3.event.sourceEvent.y: " + d3.event.sourceEvent.y);
-                  console.log("svgHeight: " + svgHeight);
-                  console.log("margins.bottom: " + margins.bottom);                
+                  // console.log("d3.event.sourceEvent.y: " + d3.event.sourceEvent.y);
+                  // console.log("d3.mouse(this)[1]: " + d3.mouse(this)[1]);
+                  // console.log("svgHeight: " + svgHeight);
+                  // console.log("margins.bottom: " + margins.bottom);                
                   d3.select(this)
-                    .attr("y", function(d) { return d3.event.sourceEvent.y; })
-                    .attr("height", (svgHeight - margins.bottom - d3.event.sourceEvent.y ));
-                      //.attr("height", (svgHeight - margins.bottom - d3.event.sourceEvent.y ));
-                      //d.y = yScale(parseInt(d3.event.y))
-                      // .attr("cy", d.y = Math.max(radius, Math.min(height - radius, d3.event.y)));
+                    .attr("y", function(d) { return d3.mouse(this)[1]; })
+                    .attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
+  
                 }
 
              this.on('mouseover', tip.show)
@@ -168,7 +228,7 @@ for(i=0; i < dataset.length; i++){
 }
 
 
-
+//Make an array of yScale, given each respective datapoint's max value
 var yScaleArray = [];
 
 function initYscales () {
@@ -200,7 +260,20 @@ initYscales();
     d3.select("#oValue").property("value", dataset[1].val);
     d3.select("#pValue").property("value", dataset[2].val);
 
-  
+    //******* line at top of each rect *******
+    // for (var i=0; i<dataset.length; i++){
+    //       d3.select(".rect"+i)
+    //           .append("g")
+    //           .append("line")
+    //           .attr("x1", 20)
+    //           .attr("y1", function(d){
+    //                 return chart._height - margins.bottom - dataset[i].val; })
+    //           .attr("x2", 50)
+    //           .attr("y2", function(d){
+    //                 return chart._height - margins.bottom - dataset[i].val; }) 
+    //           .attr("stroke", "black") 
+    //           .attr("stroke-width", 2);
+    //   }
 
     // adjust the text
     function update(nValue, index) {
@@ -222,6 +295,7 @@ initYscales();
         .attr("y", function() {   
           return yScaleArray[index](nValue);  
         })
+    
     } 
 
 
