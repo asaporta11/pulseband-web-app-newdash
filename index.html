@@ -3,14 +3,16 @@
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
 		<meta charset="UTF-8"/> 
-		<title>Pulseband App</title>
+		<title>Pulseband Simulation</title>
 		<link rel="stylesheet" href="css/reset.css">
 		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/d3.slider.css">
 		<script src="https://code.jquery.com/jquery-git.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 		<script src ="js/vendors/d3.chart.min.js"></script>
 		<script src="js/vendors/d3.tip.js"></script>
+		<script src="js/vendors/d3.slider.js"></script>
 		<script src="js/config.js"></script>
 		<script src="js/events.js"></script>
 	</head>
@@ -28,14 +30,14 @@
 				</ul>		
 			</nav>
 		</div>
-		<h1>Dashboard</h1>
+		<h1>Simulation</h1>
 		<div class="dash-top-container clearfix">
-			<div class="toggle-states">
+			<!-- <div class="toggle-states">
 				<div><img src="img/hr_icon.gif" alt="HeartRate"></div>
 				<div><img src="img/bp_icon.gif" alt="BloodPressure"></div>
 				<div><img src="img/steps_icon.gif" alt="Steps"></div>
 				<div><img src="img/sleep_icon.gif" alt="Sleep"></div>
-			</div>
+			</div> -->
 			<div id="bar-chart">
 			</div>
 			<div class="field">
@@ -72,14 +74,14 @@
 				  <label for="oValue">
 				         input = <span id="sValue-value"></span>
 				  </label>
-				  <input type="number" min="0" max="200" step="5" value="0" id="sValue">
+				  <input type="number" min="0" max="200" step="0.5" value="0" id="sValue">
 			</div>
 		</div>
 		<div class="dash-bottom-container clearfix">
 			<div class="placeholder">
 				
 			</div>
-			<div class="important-info">
+			<!-- <div class="important-info">
 				<h2>Important Information</h2>
 				<p>We see that your HR was high and BP extremely low. This may be something you may want to discuss with your doctor.
 				</p>
@@ -89,11 +91,8 @@
 					Notes:
 					<textarea name="notes" id="notes" cols="25" rows="2"></textarea>
 					<button>Log</button>
-			</div>
+			</div> -->
 		</div>
-		
-
-
 		<script src="js/newscript.js"></script>
 	</body>
 </html>
