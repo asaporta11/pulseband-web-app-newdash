@@ -141,6 +141,12 @@ svg text{
 	fill: none;
 } /*changed this to stroke: 0px; and then it drew nothing, then did stroke: black; and it looks good */
 
+.field{
+	display: inline-block; 
+	width: 240px; 
+	text-align: right;
+}
+
 #bar-chart svg g g rect {
 	position: relative;
 }

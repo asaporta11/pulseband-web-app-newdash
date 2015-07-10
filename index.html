@@ -11,6 +11,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 		<script src ="js/vendors/d3.chart.min.js"></script>
 		<script src="js/vendors/d3.tip.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/events.js"></script>
 	</head>
 	<body>
 		<div class="nav-container">
@@ -36,29 +38,42 @@
 			</div>
 			<div id="bar-chart">
 			</div>
-			<p>
-				  <label for="nValue" 
-				         style="display: inline-block; width: 240px; text-align: right">
+			<div class="field">
+				  <label for="nValue">
 				         input = <span id="nValue-value"></span>
 				  </label>
 				  <input type="number" min="0" max="360" step="5" value="0" id="nValue">
-			</p>
-
-			<p>
-				  <label for="oValue" 
-				         style="display: inline-block; width: 240px; text-align: right">
+			</div>
+			<div class="field">
+				  <label for="oValue">
 				         input = <span id="oValue-value"></span>
 				  </label>
 				  <input type="number" min="0" max="200" step="5" value="0" id="oValue">
-			</p>
-
-			<p>
-				  <label for="oValue" 
-				         style="display: inline-block; width: 240px; text-align: right">
+			</div>
+			<div class="field">
+				  <label for="oValue">
 				         input = <span id="pValue-value"></span>
 				  </label>
 				  <input type="number" min="0" max="20000" step="500" value="0" id="pValue">
-			</p>			
+			</div>		
+			<div class="field">
+				  <label for="oValue">
+				         input = <span id="qValue-value"></span>
+				  </label>
+				  <input type="number" min="0" max="200" step="5" value="0" id="qValue">
+			</div>	
+			<div class="field">
+				  <label for="oValue">
+				         input = <span id="rValue-value"></span>
+				  </label>
+				  <input type="number" min="0" max="200" step="5" value="0" id="rValue">
+			</div>
+			<div class="field">
+				  <label for="oValue">
+				         input = <span id="sValue-value"></span>
+				  </label>
+				  <input type="number" min="0" max="200" step="5" value="0" id="sValue">
+			</div>
 		</div>
 		<div class="dash-bottom-container clearfix">
 			<div class="placeholder">
