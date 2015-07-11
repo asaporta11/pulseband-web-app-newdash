@@ -7,6 +7,7 @@ var svg = d3.select('#bar-chart').append('svg')
 
 var xAxis = svg.append('g');
 var xScale = d3.scale.ordinal();
+var maxAxis = svg.append('g');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,23 +80,31 @@ d3.chart("rectGraph", {
             .attr("height",function(d){
               return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
             });
-            
+          
 
           //draws line on bar    
           d3.select(".rect" + i)
             .append("g")
             .append("line")
             .attr("x1", 20)
-            .attr("y1", function (d) {
-              return chart._height - margins.bottom - dataset[i].val;
+            .attr("y1", function () {
+              return chart._height - margins.bottom - chart.yScale(dataset[i].val);
             })
             .attr("x2", 80)
-            .attr("y2", function (d) {
-              return chart._height - margins.bottom - dataset[i].val;
-            }) 
+            // .attr("y2", function () {
+            //   return chart._height - margins.bottom - chart.yScale(dataset[i].val);
+            // })
+            // .attr("y2", function (i) {
+            //   return chart._height - margins.bottom - dataset[i].val;
+            // })
+            .attr("y2", function () {
+              return chart._height - margins.bottom - chart.yScale(dataset[i].val);
+            })
             .attr("stroke", "black") 
             .attr("stroke-width", 2); 
             
+            
+
           //Makes bar draggable     
           this.call(drag);
           this.on('mouseover', tip.show).on('mouseout', tip.hide);
@@ -171,6 +180,37 @@ function update(nValue, index) {
       return yScaleArray[index](nValue);  
     })  
 }    
+
+//max axis at top 
+var max_xScale = xScale.domain(dataset.map(function(d){
+    return 'max: ' + d.max;
+  }))
+  .rangeBands([margins.left, (svgWidth - margins.right)], .1);  
+  
+maxAxis.attr('class', 'axis')
+  .attr('transform', 'translate(0,' + (margins.top - 10) + ')')
+  .call(d3.svg.axis()
+  .scale(max_xScale)
+  .orient('top'));
+
+//Position text 
+// var yTextPadding = 20;
+//   svg.selectAll(".bartext")
+//     .data(dataset)
+//     .enter()
+//     .append("text")
+//     .attr("class", "bartext")
+//     .attr("text-anchor", "middle")
+//     .attr("fill", "white")
+//     .attr("x", function(d,i) {
+//         return xScale(i) + xScale.rangeBand()/2;
+//     })
+//     .attr("y", function(d,i) {
+//         return height - yScale(d) + yTextPadding;
+//     })
+//     .text(function(d){
+//          return d;
+//     });  
 
 // //  % Risk Slider
 // d3.slider().on("slide", function(evt, value) {
