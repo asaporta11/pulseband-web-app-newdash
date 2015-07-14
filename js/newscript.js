@@ -61,7 +61,16 @@ d3.chart("rectGraph", {
             .origin(function(d) {
               return d.val;
             }) //.origin()
-            .on("drag", events.dragmove);
+            .on("drag", function (d) {
+              d3.select(this)
+                .attr("y", function(d) {
+                  var yValue = chart.yScale.invert(d3.mouse(this)[1]);
+                  events.updateInputValues(this, yValue);
+                  console.log(d);
+                  return d3.mouse(this)[1];
+                })
+                .attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
+            });
             
           this.attr("x", 0)//x pos set to 0 for each chart
             .attr("width", chart._width)
@@ -91,13 +100,14 @@ d3.chart("rectGraph", {
               return chart._height - margins.bottom - chart.yScale(dataset[i].val);
             })
             .attr("x2", 80)
+           
             // .attr("y2", function () {
             //   return chart._height - margins.bottom - chart.yScale(dataset[i].val);
             // })
             // .attr("y2", function (i) {
             //   return chart._height - margins.bottom - dataset[i].val;
             // })
-            .attr("y2", function () {
+            .attr("y2", function() {
               return chart._height - margins.bottom - chart.yScale(dataset[i].val);
             })
             .attr("stroke", "black") 
@@ -138,7 +148,9 @@ d3.chart("rectGraph", {
 for(i=0; i < dataset.length; i++){
   var chart = svg.append("g")
     .classed("rect"+i, true)
+    .classed("rect", true)
     .attr("transform", "translate(" + xScale(dataset[i].name) + ", 0)")
+    .attr("data-rect", i)
     .chart("rectGraph")
     .width(xScale.rangeBand())
     .height(svgHeight);
@@ -205,9 +217,35 @@ d3.select('#slider')
 // var xExtent = d3.select('.rect1').domain().range();
 // console.log(xExtent.invertExtent(100));  
 
-var yExtent = svg.invertExtent(dataset);
-console.log(yExtent);
+// var yExtent = svg.invertExtent(dataset);
+// console.log(yExtent);
+console.log(dataset);
+var yExtent = d3.scale.threshold().domain().range()
 
+//just gives max x
+  svg.on("click", function(d, i) {
+    console.log("xScale.domain()[i]: " + xScale.domain()[i]);
+  });  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
 
 // var xExtent = d3.select('.rect1').domain().range();
 // console.log(xExtent.invertExtent(100));  
@@ -224,13 +262,6 @@ console.log(yExtent);
 //     })
 //     .style("font-family", "Arial")
 //     .style("font-size", "10pt");
-
-//just gives max x
-  svg.on("click", function(d, i) {
-    console.log("xScale.domain()[i]: " + xScale.domain()[i]);
-  });  
-
-
 
 //Position text 
 // var yTextPadding = 20;
