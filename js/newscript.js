@@ -87,7 +87,7 @@ d3.chart("rectGraph", {
             .append("g")
             .append("line")
             .attr("x1", 20)
-            .attr("y1", function () {
+            .attr("y1", function() {
               return chart._height - margins.bottom - chart.yScale(dataset[i].val);
             })
             .attr("x2", 80)
@@ -193,6 +193,45 @@ maxAxis.attr('class', 'axis')
   .scale(max_xScale)
   .orient('top'));
 
+//  % Risk Slider
+var slider = d3.slider().on("slide", function(evt, value) {
+  d3.select('#slider4text').text(value);
+})  
+d3.select('#slider')
+  .call(slider);  
+
+
+//playing with invert
+// var xExtent = d3.select('.rect1').domain().range();
+// console.log(xExtent.invertExtent(100));  
+
+var yExtent = svg.invertExtent(dataset);
+console.log(yExtent);
+
+
+// var xExtent = d3.select('.rect1').domain().range();
+// console.log(xExtent.invertExtent(100));  
+
+// svg.selectAll("text")
+//     .data(dataset)
+//     .enter()
+//     .append("text")
+//     .attr("x", 100)
+//     .attr("y", 100)
+//     .text(function (d, i) {
+//         var inv = quantize.invertExtent(d);
+//         return "≤ " + format(inv[1]);
+//     })
+//     .style("font-family", "Arial")
+//     .style("font-size", "10pt");
+
+//just gives max x
+  svg.on("click", function(d, i) {
+    console.log("xScale.domain()[i]: " + xScale.domain()[i]);
+  });  
+
+
+
 //Position text 
 // var yTextPadding = 20;
 //   svg.selectAll(".bartext")
@@ -211,18 +250,6 @@ maxAxis.attr('class', 'axis')
 //     .text(function(d){
 //          return d;
 //     });  
-
-// //  % Risk Slider
-// d3.slider().on("slide", function(evt, value) {
-//   d3.select('#slider3text').text(value);
-// })  
-// d3.slider()
-// console.log("hello");
-// console.log(d3.slider());
-
-
-
-
 
 
 

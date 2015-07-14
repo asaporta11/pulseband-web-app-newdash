@@ -7,14 +7,8 @@
 		<link rel="stylesheet" href="css/reset.css">
 		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/main.css">
-		<link rel="stylesheet" href="css/d3.slider.css">
 		<script src="https://code.jquery.com/jquery-git.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-		<script src ="js/vendors/d3.chart.min.js"></script>
-		<script src="js/vendors/d3.tip.js"></script>
-		<script src="js/vendors/d3.slider.js"></script>
-		<script src="js/config.js"></script>
-		<script src="js/events.js"></script>
+
 	</head>
 	<body>
 		<div class="nav-container">
@@ -39,8 +33,12 @@
 				<div><img src="img/sleep_icon.gif" alt="Sleep"></div>
 			</div> -->
 			<div id="bar-chart">
+				<div class="slider-container">
+					<div id="slider"></div>
+					<div id="slider4text"></div>
+				</div>
 			</div>
-			<div id="slider"></div>
+			
 			<div class="field">
 				  <label for="nValue">
 				         Blood Pressure: <span id="nValue-value"></span>
@@ -94,6 +92,14 @@
 					<button>Log</button>
 			</div> -->
 		</div>
+
+  		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src ="js/vendors/d3.chart.min.js"></script>
+		<script src="js/vendors/d3.tip.js"></script>
+		<script src="d3.slider.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/events.js"></script>  		
+  		<script src="d3.slider.js"></script>		
 		<script src="js/newscript.js"></script>
 	</body>
 </html>

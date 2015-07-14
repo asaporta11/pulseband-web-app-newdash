@@ -1,6 +1,4 @@
 /****	Slider    ****/
-
-/*to comment out all code, had to UNcomment all position: absolute out, so make sure to comment those out when you uncomment out the code;
 .d3-slider {
     position: relative;
     font-family: Verdana,Arial,sans-serif;
@@ -19,7 +17,7 @@
   right:0px;
   height: 0.8em;
   position: relative;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 .d3-slider-range-vertical {
@@ -27,7 +25,7 @@
   left:0px;
   right:0px;
   position: relative;
-    position: absolute;
+  /*position: absolute;*/
   top:0;
 }
 
@@ -38,7 +36,7 @@
 
 .d3-slider-handle {
     position: relative;
-      position: absolute;
+    /*position: absolute;*/
     width: 1.2em;
     height: 1.2em;
     border: 1px solid #d3d3d3;
@@ -90,6 +88,6 @@
     margin-left: 0;
     margin-bottom: -.6em;      
 }
-*/
+
 
 
