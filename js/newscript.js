@@ -60,13 +60,12 @@ d3.chart("rectGraph", {
           var drag = d3.behavior.drag()
             .origin(function(d) {
               return d.val;
-            }) //.origin()
+            }) 
             .on("drag", function (d) {
               d3.select(this)
                 .attr("y", function(d) {
                   var yValue = chart.yScale.invert(d3.mouse(this)[1]);
                   events.updateInputValues(this, yValue);
-                  console.log(d);
                   return d3.mouse(this)[1];
                 })
                 .attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
@@ -92,30 +91,52 @@ d3.chart("rectGraph", {
           
 
           //draws line on bar    
+          // d3.select(".rect" + i)
+          //   .append("g")
+          //   .append("line")
+            // .attr("x1", 0)
+            // .attr("y1", svgHeight - margins.bottom)
+            // //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
+            // .attr("x2", 0)
+            // .attr("y2", svgHeight - margins.bottom)
+            // .attr("stroke", "black") 
+            // .attr("stroke-width", 2);
+
+          // d3.selectAll('line')
+          //   .transition()   
+          //   .delay(function(data, i) {
+          //     return i * 20;
+          //   })
+          //   .duration(1500)
+          //   .ease("elastic")
+          //   .attr("x1", 20)
+          //   .attr("y1", function() {
+          //     return chart.yScale(dataset[i].val);
+          //   })
+          //   .attr("x2", 80)
+          //   .attr("y2", function() {
+          //     return chart.yScale(dataset[i].val);
+          //   })
+          //   .attr("stroke", "black") 
+          //   .attr("stroke-width", 2);
+
+          // //draws line on bar    
           d3.select(".rect" + i)
             .append("g")
             .append("line")
             .attr("x1", 20)
             .attr("y1", function() {
-              return chart._height - margins.bottom - chart.yScale(dataset[i].val);
+              return chart.yScale(dataset[i].val) + 7;
             })
+            //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
             .attr("x2", 80)
-           
-            // .attr("y2", function () {
-            //   return chart._height - margins.bottom - chart.yScale(dataset[i].val);
-            // })
-            // .attr("y2", function (i) {
-            //   return chart._height - margins.bottom - dataset[i].val;
-            // })
             .attr("y2", function() {
-              return chart._height - margins.bottom - chart.yScale(dataset[i].val);
+              return chart.yScale(dataset[i].val) + 7;
             })
             .attr("stroke", "black") 
-            .attr("stroke-width", 2); 
-            
-            
+            .attr("stroke-width", 1); 
 
-          //Makes bar draggable     
+          //Calls drag event and tooltip   
           this.call(drag);
           this.on('mouseover', tip.show).on('mouseout', tip.hide);
 
@@ -213,19 +234,7 @@ d3.select('#slider')
   .call(slider);  
 
 
-//playing with invert
-// var xExtent = d3.select('.rect1').domain().range();
-// console.log(xExtent.invertExtent(100));  
 
-// var yExtent = svg.invertExtent(dataset);
-// console.log(yExtent);
-console.log(dataset);
-var yExtent = d3.scale.threshold().domain().range()
-
-//just gives max x
-  svg.on("click", function(d, i) {
-    console.log("xScale.domain()[i]: " + xScale.domain()[i]);
-  });  
 
 
 
