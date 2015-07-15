@@ -76,7 +76,7 @@ d3.chart("rectGraph", {
             .attr("y", chart._height - margins.bottom) //set y value to 0 on axis
             .attr("height", 0); //set height to 0 (state before transition)
 
-          this.transition() //initiates transition
+          this.transition() //initiates transition for rects
             .delay(function(data, i) {
               return i * 20;
             })
@@ -91,50 +91,50 @@ d3.chart("rectGraph", {
           
 
           //draws line on bar    
-          // d3.select(".rect" + i)
-          //   .append("g")
-          //   .append("line")
-            // .attr("x1", 0)
-            // .attr("y1", svgHeight - margins.bottom)
-            // //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
-            // .attr("x2", 0)
-            // .attr("y2", svgHeight - margins.bottom)
-            // .attr("stroke", "black") 
-            // .attr("stroke-width", 2);
-
-          // d3.selectAll('line')
-          //   .transition()   
-          //   .delay(function(data, i) {
-          //     return i * 20;
-          //   })
-          //   .duration(1500)
-          //   .ease("elastic")
-          //   .attr("x1", 20)
-          //   .attr("y1", function() {
-          //     return chart.yScale(dataset[i].val);
-          //   })
-          //   .attr("x2", 80)
-          //   .attr("y2", function() {
-          //     return chart.yScale(dataset[i].val);
-          //   })
-          //   .attr("stroke", "black") 
-          //   .attr("stroke-width", 2);
-
-          // //draws line on bar    
           d3.select(".rect" + i)
             .append("g")
             .append("line")
             .attr("x1", 20)
+            .attr("y1", svgHeight - margins.bottom)
+            //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
+            .attr("x2", 80)
+            .attr("y2", svgHeight - margins.bottom)
+            // .attr("stroke", "black") 
+            // .attr("stroke-width", 2);
+
+          // d3.selectAll('line')
+            .transition()   
+            .delay(function(data, i) {
+              return i * 20;
+            })
+            .duration(1500)
+            .ease("elastic")
+            .attr("x1", 20)
             .attr("y1", function() {
               return chart.yScale(dataset[i].val) + 7;
             })
-            //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
             .attr("x2", 80)
             .attr("y2", function() {
               return chart.yScale(dataset[i].val) + 7;
             })
             .attr("stroke", "black") 
-            .attr("stroke-width", 1); 
+            .attr("stroke-width", 1);
+
+          // // //draws line on bar  (correctly!)   
+          // d3.select(".rect" + i)
+          //   .append("g")
+          //   .append("line")
+          //   .attr("x1", 20)
+          //   .attr("y1", function() {
+          //     return chart.yScale(dataset[i].val) + 7;
+          //   })
+          //   //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
+          //   .attr("x2", 80)
+          //   .attr("y2", function() {
+          //     return chart.yScale(dataset[i].val) + 7;
+          //   })
+          //   .attr("stroke", "black") 
+          //   .attr("stroke-width", 1); 
 
           //Calls drag event and tooltip   
           this.call(drag);
