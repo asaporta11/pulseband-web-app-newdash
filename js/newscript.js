@@ -63,12 +63,19 @@ d3.chart("rectGraph", {
             }) 
             .on("drag", function (d) {
               d3.select(this)
-                .attr("y", function(d) {
+                .attr("y", function() {
                   var yValue = chart.yScale.invert(d3.mouse(this)[1]);
                   events.updateInputValues(this, yValue);
-                  return d3.mouse(this)[1];
+                  return d3.mouse(this)[1];    
                 })
                 .attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
+              d3.selectAll('line')
+                .attr("y1", function() {
+                  return d3.mouse(this)[1] + 7;
+                }) 
+                .attr("y2", function() {
+                  return d3.mouse(this)[1] + 7;
+                }) 
             });
             
           this.attr("x", 0)//x pos set to 0 for each chart
@@ -80,7 +87,7 @@ d3.chart("rectGraph", {
             .delay(function(data, i) {
               return i * 20;
             })
-            .duration(1500)
+            .duration(2000)
             .ease("elastic")
             .attr("y", function(d){
               return chart.yScale(d.val); //specifies y value to transition to
@@ -96,18 +103,13 @@ d3.chart("rectGraph", {
             .append("line")
             .attr("x1", 20)
             .attr("y1", svgHeight - margins.bottom)
-            //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
             .attr("x2", 80)
             .attr("y2", svgHeight - margins.bottom)
-            // .attr("stroke", "black") 
-            // .attr("stroke-width", 2);
-
-          // d3.selectAll('line')
             .transition()   
             .delay(function(data, i) {
               return i * 20;
             })
-            .duration(1500)
+            .duration(2000)
             .ease("elastic")
             .attr("x1", 20)
             .attr("y1", function() {
@@ -120,26 +122,9 @@ d3.chart("rectGraph", {
             .attr("stroke", "black") 
             .attr("stroke-width", 1);
 
-          // // //draws line on bar  (correctly!)   
-          // d3.select(".rect" + i)
-          //   .append("g")
-          //   .append("line")
-          //   .attr("x1", 20)
-          //   .attr("y1", function() {
-          //     return chart.yScale(dataset[i].val) + 7;
-          //   })
-          //   //.attr("height", ( svgHeight - margins.bottom - d3.mouse(this)[1] ));
-          //   .attr("x2", 80)
-          //   .attr("y2", function() {
-          //     return chart.yScale(dataset[i].val) + 7;
-          //   })
-          //   .attr("stroke", "black") 
-          //   .attr("stroke-width", 1); 
-
           //Calls drag event and tooltip   
           this.call(drag);
           this.on('mouseover', tip.show).on('mouseout', tip.hide);
-
           return this;
         }
       }
@@ -174,8 +159,8 @@ for(i=0; i < dataset.length; i++){
     .attr("data-rect", i)
     .chart("rectGraph")
     .width(xScale.rangeBand())
-    .height(svgHeight);
-    chart.draw([dataset[i]]);
+    .height(svgHeight);  
+  chart.draw([dataset[i]]);
 }
 
 var yScaleArray = [];  //Make an array of yScale, given each respective datapoint's max value (to be used for scaling nValue below)
@@ -196,15 +181,14 @@ $(".field input").each(function(i){
   d3.select(id).on("input", function() {
     update(this.value, i);
   });
-  //initially updates value in input field upon page load
-  d3.select(id).property("value", dataset[i].val);
+  d3.select(id).property("value", dataset[i].val); //initially updates value in input field upon page load
 }); 
 
 // adjust the text
 function update(nValue, index) {
   var node = $(".rect" + index).find("rect")[0];
   d3.select((".rect" + index)).select("g").select("rect")
-    .transition() //initiates transition
+    .transition() 
     .delay(function(data, i){ return i * 20; })
     .duration(1500)
     .ease("elastic")
@@ -212,6 +196,9 @@ function update(nValue, index) {
     .attr("y", function() {   
       return yScaleArray[index](nValue);  
     })  
+  d3.select(this).find("line")
+  console.log('line');
+  console.log('hello world');    
 }    
 
 //max axis at top 

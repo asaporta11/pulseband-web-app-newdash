@@ -264,6 +264,7 @@ line {
 
 
 /****	Slider    ****/
+
 .d3-slider {
     position: relative;
     font-family: Verdana,Arial,sans-serif;
@@ -351,7 +352,13 @@ line {
     margin-bottom: -.6em;      
 }
 
-
+/*   Slider - mine   */
+.slider-container{
+	width: 80%;
+	margin: auto;
+	margin-top: 1em; 
+	margin-bottom: 0px;
+} 
 
 /*svg.line-graph text {
 	cursor: default;
