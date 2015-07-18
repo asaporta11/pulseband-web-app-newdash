@@ -1,8 +1,8 @@
 var margins = {
   left: 100,
   right: 100,
-  top: 100,
-  bottom: 100
+  top: 50,
+  bottom: 20
 };
 
 var dataset = [

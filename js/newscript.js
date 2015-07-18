@@ -1,9 +1,9 @@
 var svgWidth = parseInt($('#bar-chart').css('width'));
-var svgHeight = parseInt($('#bar-chart').css('height'));
+var svgHeight = 420;
 
 var svg = d3.select('#bar-chart').append('svg')
-    .attr('width', svgWidth - (margins.left + margins.right))
-    .attr('height', svgHeight - (margins.top + margins.bottom));
+    .attr('width', '100%')
+    .attr('height', svgHeight);
 
 var xAxis = svg.append('g');
 var xScale = d3.scale.ordinal();
@@ -17,7 +17,7 @@ xScale.domain(dataset.map(function(d) {
     .rangeBands([margins.left, (svgWidth - margins.right)], .1);
 
 xAxis.attr('class', 'axis')
-    .attr('transform', 'translate(0,' + (svgHeight - margins.top) + ')')
+    .attr('transform', 'translate(0,' + (svgHeight - margins.bottom) + ')')
     .call(d3.svg.axis()
         .scale(xScale)
         .orient('bottom'));
@@ -202,9 +202,7 @@ function update(nValue, index) {
         .attr("height", svgHeight - margins.bottom - yScaleArray[index](nValue))
         .attr("y", function() {
             return yScaleArray[index](nValue);
-        })
-    d3.select(this).find("line")
-    console.log('line');
+        });
 
 }
 
@@ -228,136 +226,3 @@ d3.select('#slider')
     .call(slider);
 
 
-// svg.on("mouseover", function(d,i) {
-//         // d: bound datum to DOM element
-//         console.log(d3.mouse(this)[1]);
-//     });
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-
-// var xExtent = d3.select('.rect1').domain().range();
-// console.log(xExtent.invertExtent(100));  
-
-// svg.selectAll("text")
-//     .data(dataset)
-//     .enter()
-//     .append("text")
-//     .attr("x", 100)
-//     .attr("y", 100)
-//     .text(function (d, i) {
-//         var inv = quantize.invertExtent(d);
-//         return "≤ " + format(inv[1]);
-//     })
-//     .style("font-family", "Arial")
-//     .style("font-size", "10pt");
-
-//Position text 
-// var yTextPadding = 20;
-//   svg.selectAll(".bartext")
-//     .data(dataset)
-//     .enter()
-//     .append("text")
-//     .attr("class", "bartext")
-//     .attr("text-anchor", "middle")
-//     .attr("fill", "white")
-//     .attr("x", function(d,i) {
-//         return xScale(i) + xScale.rangeBand()/2;
-//     })
-//     .attr("y", function(d,i) {
-//         return height - yScale(d) + yTextPadding;
-//     })
-//     .text(function(d){
-//          return d;
-//     });  
-
-
-
-
-
-
-//******* line at top of each rect *******
-// for (var i=0; i<dataset.length; i++){
-//       d3.select(".rect"+i)
-//           .append("g")
-//           .append("line")
-//           .attr("x1", 20)
-//           .attr("y1", function(d){
-//                 return chart._height - margins.bottom - dataset[i].val; })
-//           .attr("x2", 50)
-//           .attr("y2", function(d){
-//                 return chart._height - margins.bottom - dataset[i].val; }) 
-//           .attr("stroke", "black") 
-//           .attr("stroke-width", 2);
-//   }    
-
-//***  put text on each bar ***
-// var chart = svg.append("g")
-// .classed("rect"+i, true)
-// .attr("transform", "translate(" + xScale(dataset[i].name) + ", 0)")
-// .chart("rectGraph")
-// .width(xScale.rangeBand())
-// .height(svgHeight)
-// .attr("text-anchor", "middle")
-// .text(function(){return dataset[i].val})
-// .attr("fill", "white");
-
-
-//**** attempts to draw a line (didn't work for various reasons)  ****
-// for (var i=0; i<dataset.length; i++){
-//   d3.select(".rect"+i)
-//       .append("g")
-//       .append("line")
-//       .attr("x1", 20)
-//       .attr("y1", function(d){
-//             return chart._height - margins.bottom - dataset[i].val; })
-//       .attr("x2", 50)
-//       .attr("y2", function(d){
-//             return chart._height - margins.bottom - dataset[i].val; }) 
-//       .attr("stroke", "black") 
-//       .attr("stroke-width", 2);
-// }
-
-
-
-
-// this.append("g")
-// .append("line")
-// .attr("x1", 20)
-// .attr("y1", function(d){
-//       return chart._height - margins.bottom - chart.yScale(d.val); })
-// .attr("x2", 50)
-// .attr("y2", function(d){
-//       return chart._height - margins.bottom - chart.yScale(d.val); }) 
-// .attr("stroke", "black") 
-// .attr("stroke-width", 5);
-
-// this.selectAll("g rect")
-//   .append("line");
-
-// this.append("line")
-// .attr("x1", 20)
-// .attr("y1", 100)
-// .attr("x2", 50)
-// .attr("y2", 100) 
-// .attr("stroke", "black") 
-// .attr("stroke-width", 5);
-
-
-
-// this.selectAll("rect")
-//     .append("line")
-//     .style("stroke", "black")
-//     .style("stroke-width", 20)
-//     .style("stroke-linecap", "butt")
-//     .attr("x1", 100)
-//     .attr("y1", 100)
-//     .attr("x2", 200)
-//     .attr("y2", 200);
