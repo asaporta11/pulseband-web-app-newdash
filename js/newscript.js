@@ -27,15 +27,6 @@ d3.chart("rectGraph", {
         var chart = this;
         chart.yScale = d3.scale.linear();
 
-        // Initialize tooltip
-        var tip = d3.tip().html(function(d) {
-            //console.log(chart.yScale(d3.mouse(this)[1]));
-            return d.val + " " + d.unit;
-        });
-
-        //tooltip
-        svg.call(tip)
-
         // create a layer of circles that will go into
         // a new group element on the base of the chart
         chart.layer("rectGroup", this.base, {
@@ -69,28 +60,9 @@ d3.chart("rectGraph", {
                             return d.val;
                         })
                         .on("drag", function(d) {
-                            var group = d3.select(this); //can't do this.select because in this context (drag function), you're selecting a node in the dom 
-                            group.select('rect')
-                                .attr("y", function() {
-                                    var yValue = chart.yScale.invert(d3.mouse(this)[1]);
-                                    events.updateInputValues(this, yValue);
-                                    return d3.mouse(this)[1];
-                                })
-                                .attr("height", (svgHeight - margins.bottom - d3.mouse(this)[1]));
-                            group.select('line')
-                                .attr("y1", function() {
-                                    return d3.mouse(this)[1] + 7;
-                                })
-                                .attr("y2", function() {
-                                    return d3.mouse(this)[1] + 7;
-                                });
-                            group.select('text')
-                                .attr("x", 15)
-                                // .attr("text-anchor", "middle")
-                                .attr("y", function() {
-                                    return d3.mouse(this)[1] + 30; 
-                                }) 
-                                .text(parseInt(chart.yScale.invert(d3.mouse(this)[1])) + " " + d.unit + "");   
+                            events.sliderValueChange();
+                            d.val = chart.yScale.invert(d3.mouse(this)[1]);
+                            chart.trigger('drag', d);        
                         });
 
                     this.select('rect')
@@ -150,9 +122,7 @@ d3.chart("rectGraph", {
                         })  
                         .attr('fill', "black") 
 
-                    //Calls drag event and tooltip   
                     this.call(drag);
-                    // this.on('mouseover', tip.show).on('mouseout', tip.hide);
                     return this;
                 }
             }
@@ -161,7 +131,6 @@ d3.chart("rectGraph", {
 
     transform: function(data) {
         var adjustData; 
-        console.log(data);
         if( data.val > data.max ){
             adjustData = [{ val: data.max }]; 
         }else{
@@ -195,7 +164,10 @@ for (i = 0; i < dataset.length; i++) {
         .chart("rectGraph")
         .width(xScale.rangeBand())
         .height(svgHeight);
-    charts.push(chart);
+    charts.push(chart)
+    charts[i].on('drag', function(d){
+            this.draw([d]);
+        })
     chart.draw([dataset[i]]);
 }
 
@@ -244,5 +216,9 @@ var slider = d3.slider().on("slide", function(evt, value) {
 })
 d3.select('#slider')
     .call(slider);
+
+
+
+
 
 
