@@ -51,7 +51,10 @@ d3.chart("rectGraph", {
                 var group = this.append('g')
                     .classed('containBar', true);
                 group.append('rect');
-                group.append('line');
+                var lineTextGroup = group.append('g')
+                    .classed('topBarGroup', true);
+                lineTextGroup.append('line');
+                lineTextGroup.append('text');
                 return this;    
             },
 
@@ -103,29 +106,30 @@ d3.chart("rectGraph", {
                             return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
                         });
 
-
-                    //draws line on bar    
-                    this.select("line")
-                        .attr("x1", 20)
-                        .attr("y1", svgHeight - margins.bottom)
-                        .attr("x2", 80)
-                        .attr("y2", svgHeight - margins.bottom)
+                    this.select('.topBarGroup')
+                        .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")")  
                         .transition()
                         .delay(function(d, i) {
                             return i * 20;
                         })
                         .duration(2000)
                         .ease("elastic")
+                        .attr('transform', function(d) { 
+                            return "translate(0," + chart.yScale(d.val) + ")"; 
+                        })    
+
+                    //draws line on bar    
+                    this.select("line")
                         .attr("x1", 20)
                         .attr("y1", function() {
-                            return chart.yScale(dataset[i].val) + 7;
+                            return 7;
                         })
                         .attr("x2", 80)
                         .attr("y2", function() {
-                            return chart.yScale(dataset[i].val) + 7;
+                            return 7;
                         })
                         .attr("stroke", "black")
-                        .attr("stroke-width", 1);
+                        .attr("stroke-width", 1); 
 
                     //Calls drag event and tooltip   
                     this.call(drag);
