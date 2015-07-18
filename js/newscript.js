@@ -72,48 +72,39 @@ d3.chart("rectGraph", {
                         });
 
                     if(firstDraw){ //if firstDraw is true will initiate loop
-
-                        this.select('rect')
+                        rectSelection = this.select('rect')
                             .transition() //initiates transition for rects
                             .delay(function(data, i) {
                                 return i * 20;
                             })
                             .duration(2000)
-                            .ease("elastic")
-                            .attr("y", function(d) {
-                                return chart.yScale(d.val); //specifies y value to transition to
-                            })
-                            .attr("height", function(d) {
-                                return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
-                            });
+                            .ease("elastic");
 
-                        //top bar group contains the line and text at the top of each bar    
-                        this.select('.topBarGroup')
+                        //top bar group contains the line and text at the top of each bar 
+                        topBarSelection = this.select('.topBarGroup')
                             .transition()
                             .delay(function(d, i) {
                                 return i * 20;
                             })
                             .duration(2000)
-                            .ease("elastic")
-                            .attr('transform', function(d) { 
-                                return "translate(0," + chart.yScale(d.val) + ")"; 
-                            });    
+                            .ease("elastic");
+                                
                     }else{
-                        this.select('rect')
-                            .attr("y", function(d) {
-                                return chart.yScale(d.val); //specifies y value to transition to
-                            })
-                            .attr("height", function(d) {
-                                return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
-                            });
-
-                        //top bar group contains the line and text at the top of each bar    
-                        this.select('.topBarGroup')
-                            .attr('transform', function(d) { 
-                                return "translate(0," + chart.yScale(d.val) + ")"; 
-                            });    
+                        rectSelection = this.select('rect');
+                        topBarSelection = this.select('.topBarGroup');   
                     }
-                    firstDraw = false;    
+                    firstDraw = false;   
+
+                    rectSelection.attr("y", function(d) {
+                            return chart.yScale(d.val); //specifies y value to transition to
+                        })
+                        .attr("height", function(d) {
+                            return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
+                        }); 
+
+                    topBarSelection.attr('transform', function(d) { 
+                            return "translate(0," + chart.yScale(d.val) + ")"; 
+                        });    
                     //draws line on bar    
                     this.select("line")
                         .attr("x1", 20)
