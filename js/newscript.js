@@ -43,10 +43,10 @@ d3.chart("rectGraph", {
             // select the elements we wish to bind to and
             // bind the data to them.
             dataBind: function(data) {
-                return this.selectAll('g.rect').data(data);
+                return this.selectAll('g.containBar').data(data);
             },
 
-            // insert actual bars
+            // insert actual bars, and group containing both the line and text at the top of each bar 
             insert: function() {
                 var group = this.append('g')
                     .classed('containBar', true);
@@ -84,6 +84,13 @@ d3.chart("rectGraph", {
                                 .attr("y2", function() {
                                     return d3.mouse(this)[1] + 7;
                                 });
+                            group.select('text')
+                                .attr("x", 15)
+                                // .attr("text-anchor", "middle")
+                                .attr("y", function() {
+                                    return d3.mouse(this)[1] + 30; 
+                                }) 
+                                .text(parseInt(chart.yScale.invert(d3.mouse(this)[1])) + " " + d.unit + "");   
                         });
 
                     this.select('rect')
@@ -106,6 +113,7 @@ d3.chart("rectGraph", {
                             return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
                         });
 
+                    //top bar group contains the line and text at the top of each bar    
                     this.select('.topBarGroup')
                         .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")")  
                         .transition()
@@ -131,9 +139,20 @@ d3.chart("rectGraph", {
                         .attr("stroke", "black")
                         .attr("stroke-width", 1); 
 
+                    //draws the text on bar
+                    this.select('text')
+                        .attr("x", 15) 
+                        .attr("y", function(d) {
+                            return 25
+                        })
+                        .text(function(d) { 
+                            return parseInt(d.val) +" "+d.unit+"";
+                        })  
+                        .attr('fill', "black") 
+
                     //Calls drag event and tooltip   
                     this.call(drag);
-                    this.on('mouseover', tip.show).on('mouseout', tip.hide);
+                    // this.on('mouseover', tip.show).on('mouseout', tip.hide);
                     return this;
                 }
             }
@@ -141,6 +160,13 @@ d3.chart("rectGraph", {
     },
 
     transform: function(data) {
+        var adjustData; 
+        console.log(data);
+        if( data.val > data.max ){
+            adjustData = [{ val: data.max }]; 
+        }else{
+
+        }
         chart.yScale.domain([0, data[0].max])
             .range([chart._height - margins.bottom, margins.top]);
         return data;
@@ -158,7 +184,7 @@ d3.chart("rectGraph", {
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+var charts = [];
 //draws each bar for each item in the dataset
 for (i = 0; i < dataset.length; i++) {
     var chart = svg.append("g")
@@ -169,6 +195,7 @@ for (i = 0; i < dataset.length; i++) {
         .chart("rectGraph")
         .width(xScale.rangeBand())
         .height(svgHeight);
+    charts.push(chart);
     chart.draw([dataset[i]]);
 }
 
@@ -195,19 +222,8 @@ $(".field input").each(function(i) {
 
 // adjust the text
 function update(nValue, index) {
-    var node = $(".rect" + index).find("rect")[0];
-    d3.select((".rect" + index)).select("g").select("rect")
-        .transition()
-        .delay(function(data, i) {
-            return i * 20;
-        })
-        .duration(1500)
-        .ease("elastic")
-        .attr("height", svgHeight - margins.bottom - yScaleArray[index](nValue))
-        .attr("y", function() {
-            return yScaleArray[index](nValue);
-        });
-
+    dataset[index].val = nValue;
+    charts[index].draw([dataset[index]]);
 }
 
 //max axis at top 
