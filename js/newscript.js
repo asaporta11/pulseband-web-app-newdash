@@ -38,17 +38,21 @@ d3.chart("rectGraph", {
 
         // create a layer of circles that will go into
         // a new group element on the base of the chart
-        chart.layer("rectGroup", this.base.append('g'), {
+        chart.layer("rectGroup", this.base, {
 
             // select the elements we wish to bind to and
             // bind the data to them.
             dataBind: function(data) {
-                return this.selectAll('rect').data(data);
+                return this.selectAll('g.rect').data(data);
             },
 
             // insert actual bars
             insert: function() {
-                return this.append('rect');
+                var group = this.append('g')
+                    .classed('containBar', true);
+                group.append('rect');
+                group.append('line');
+                return this;    
             },
 
             // define lifecycle events
@@ -62,41 +66,34 @@ d3.chart("rectGraph", {
                             return d.val;
                         })
                         .on("drag", function(d) {
-                            d3.select(this)
+                            var group = d3.select(this); //can't do this.select because in this context (drag function), you're selecting a node in the dom 
+                            group.select('rect')
                                 .attr("y", function() {
                                     var yValue = chart.yScale.invert(d3.mouse(this)[1]);
                                     events.updateInputValues(this, yValue);
                                     return d3.mouse(this)[1];
                                 })
                                 .attr("height", (svgHeight - margins.bottom - d3.mouse(this)[1]));
-
-
-                            // Gets g of rectangle: d3.select(this).node().parentNode; 
-                            // Gets g of line: $(this).parent().next()[0]) 
-
-                            // console.log(d3.select($(this).parent().next()[0]));
-                            var gOfLine = d3.select($(this).parent().next()[0]);
-
-                            d3.select(this)
+                            group.select('line')
                                 .attr("y1", function() {
-                                    // console.log(d3.mouse(this)[1] + 7);
                                     return d3.mouse(this)[1] + 7;
                                 })
                                 .attr("y2", function() {
                                     return d3.mouse(this)[1] + 7;
-                                })
-                            // //console.log(d3.select('line'));
+                                });
                         });
 
-                    this.attr("x", 0) //x pos set to 0 for each chart
-                    .attr("width", chart._width)
+                    this.select('rect')
+                        .attr("x", 0) //x pos set to 0 for each chart
+                        .attr("width", chart._width)
                         .attr("y", chart._height - margins.bottom) //set y value to 0 on axis
-                    .attr("height", 0); //set height to 0 (state before transition)
+                        .attr("height", 0); //set height to 0 (state before transition)
 
-                    this.transition() //initiates transition for rects
-                    .delay(function(data, i) {
-                        return i * 20;
-                    })
+                    this.select('rect')
+                        .transition() //initiates transition for rects
+                        .delay(function(data, i) {
+                            return i * 20;
+                        })
                         .duration(2000)
                         .ease("elastic")
                         .attr("y", function(d) {
@@ -108,15 +105,13 @@ d3.chart("rectGraph", {
 
 
                     //draws line on bar    
-                    d3.select(".rect" + i)
-                        .append("g")
-                        .append("line")
+                    this.select("line")
                         .attr("x1", 20)
                         .attr("y1", svgHeight - margins.bottom)
                         .attr("x2", 80)
                         .attr("y2", svgHeight - margins.bottom)
                         .transition()
-                        .delay(function(data, i) {
+                        .delay(function(d, i) {
                             return i * 20;
                         })
                         .duration(2000)
