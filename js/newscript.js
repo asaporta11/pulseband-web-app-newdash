@@ -25,6 +25,7 @@ xAxis.attr('class', 'axis')
 d3.chart("rectGraph", {
     initialize: function() {
         var chart = this;
+        var firstDraw = true; //to make it transition on first load but not again 
         chart.yScale = d3.scale.linear();
 
         // create a layer of circles that will go into
@@ -41,87 +42,78 @@ d3.chart("rectGraph", {
             insert: function() {
                 var group = this.append('g')
                     .classed('containBar', true);
-                group.append('rect');
+                group.append('rect')
+                    .attr("x", 0) //x pos set to 0 for each chart
+                    .attr("width", chart._width)
+                    .attr("y", chart._height - margins.bottom) //set y value to 0 on axis
+                    .attr("height", 0); //set height to 0 (state before transition)
+
                 var lineTextGroup = group.append('g')
-                    .classed('topBarGroup', true);
+                    .classed('topBarGroup', true)
+                    .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")");
                 lineTextGroup.append('line');
-                lineTextGroup.append('text');
-                return this;    
+                lineTextGroup.append('text');     
+                return this;  
             },
 
             // define lifecycle events
             events: {
                 // paint new elements
                 "merge": function() {
-
                     //for draggable beh
                     var drag = d3.behavior.drag()
                         .origin(function(d) {
                             return d.val;
                         })
                         .on("drag", function(d) {
-                            
-                            // var group = d3.select(this); //can't do this.select because in this context (drag function), you're selecting a node in the dom 
-                            // group.select('rect')
-                            //     .attr("y", function() {
-                            //         var yValue = chart.yScale.invert(d3.mouse(this)[1]);
-                            //         events.updateInputValues(this, yValue);
-                            //         return d3.mouse(this)[1];
-                            //     })
-                            //     .attr("height", (svgHeight - margins.bottom - d3.mouse(this)[1]));
-                            // group.select('line')
-                            //     .attr("y1", function() {
-                            //         return d3.mouse(this)[1] + 7;
-                            //     })
-                            //     .attr("y2", function() {
-                            //         return d3.mouse(this)[1] + 7;
-                            //     });
-                            // group.select('text')
-                            //     .attr("x", 15)
-                            //     // .attr("text-anchor", "middle")
-                            //     .attr("y", function() {
-                            //         return d3.mouse(this)[1] + 30; 
-                            //     }) 
-                            //     .text(parseInt(chart.yScale.invert(d3.mouse(this)[1])) + " " + d.unit + "");  
                             events.sliderValueChange();
-
                             d.val = chart.yScale.invert(d3.mouse(this)[1]);
                             chart.trigger('drag', d);        
                         });
 
-                    this.select('rect')
-                        .attr("x", 0) //x pos set to 0 for each chart
-                        .attr("width", chart._width)
-                        .attr("y", chart._height - margins.bottom) //set y value to 0 on axis
-                        .attr("height", 0); //set height to 0 (state before transition)
+                    if(firstDraw){ //if firstDraw is true will initiate loop
 
-                    this.select('rect')
-                        .transition() //initiates transition for rects
-                        .delay(function(data, i) {
-                            return i * 20;
-                        })
-                        .duration(2000)
-                        .ease("elastic")
-                        .attr("y", function(d) {
-                            return chart.yScale(d.val); //specifies y value to transition to
-                        })
-                        .attr("height", function(d) {
-                            return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
-                        });
+                        this.select('rect')
+                            .transition() //initiates transition for rects
+                            .delay(function(data, i) {
+                                return i * 20;
+                            })
+                            .duration(2000)
+                            .ease("elastic")
+                            .attr("y", function(d) {
+                                return chart.yScale(d.val); //specifies y value to transition to
+                            })
+                            .attr("height", function(d) {
+                                return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
+                            });
 
-                    //top bar group contains the line and text at the top of each bar    
-                    this.select('.topBarGroup')
-                        .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")")  
-                        .transition()
-                        .delay(function(d, i) {
-                            return i * 20;
-                        })
-                        .duration(2000)
-                        .ease("elastic")
-                        .attr('transform', function(d) { 
-                            return "translate(0," + chart.yScale(d.val) + ")"; 
-                        })    
+                        //top bar group contains the line and text at the top of each bar    
+                        this.select('.topBarGroup')
+                            .transition()
+                            .delay(function(d, i) {
+                                return i * 20;
+                            })
+                            .duration(2000)
+                            .ease("elastic")
+                            .attr('transform', function(d) { 
+                                return "translate(0," + chart.yScale(d.val) + ")"; 
+                            });    
+                    }else{
+                        this.select('rect')
+                            .attr("y", function(d) {
+                                return chart.yScale(d.val); //specifies y value to transition to
+                            })
+                            .attr("height", function(d) {
+                                return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
+                            });
 
+                        //top bar group contains the line and text at the top of each bar    
+                        this.select('.topBarGroup')
+                            .attr('transform', function(d) { 
+                                return "translate(0," + chart.yScale(d.val) + ")"; 
+                            });    
+                    }
+                    firstDraw = false;    
                     //draws line on bar    
                     this.select("line")
                         .attr("x1", 20)
@@ -146,9 +138,7 @@ d3.chart("rectGraph", {
                         })  
                         .attr('fill', "black") 
 
-                    //Calls drag event and tooltip   
                     this.call(drag);
-                    // this.on('mouseover', tip.show).on('mouseout', tip.hide);
                     return this;
                 }
             }
@@ -193,8 +183,6 @@ for (i = 0; i < dataset.length; i++) {
     charts.push(chart)
     charts[i].on('drag', function(d){
             this.draw([d]);
-            console.log(i);
-            console.log(d.val);
             events.updateInputValues(d.name, d.val);
         })
     chart.draw([dataset[i]]);
