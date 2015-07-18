@@ -60,7 +60,31 @@ d3.chart("rectGraph", {
                             return d.val;
                         })
                         .on("drag", function(d) {
+                            
+                            // var group = d3.select(this); //can't do this.select because in this context (drag function), you're selecting a node in the dom 
+                            // group.select('rect')
+                            //     .attr("y", function() {
+                            //         var yValue = chart.yScale.invert(d3.mouse(this)[1]);
+                            //         events.updateInputValues(this, yValue);
+                            //         return d3.mouse(this)[1];
+                            //     })
+                            //     .attr("height", (svgHeight - margins.bottom - d3.mouse(this)[1]));
+                            // group.select('line')
+                            //     .attr("y1", function() {
+                            //         return d3.mouse(this)[1] + 7;
+                            //     })
+                            //     .attr("y2", function() {
+                            //         return d3.mouse(this)[1] + 7;
+                            //     });
+                            // group.select('text')
+                            //     .attr("x", 15)
+                            //     // .attr("text-anchor", "middle")
+                            //     .attr("y", function() {
+                            //         return d3.mouse(this)[1] + 30; 
+                            //     }) 
+                            //     .text(parseInt(chart.yScale.invert(d3.mouse(this)[1])) + " " + d.unit + "");  
                             events.sliderValueChange();
+
                             d.val = chart.yScale.invert(d3.mouse(this)[1]);
                             chart.trigger('drag', d);        
                         });
@@ -122,7 +146,9 @@ d3.chart("rectGraph", {
                         })  
                         .attr('fill', "black") 
 
+                    //Calls drag event and tooltip   
                     this.call(drag);
+                    // this.on('mouseover', tip.show).on('mouseout', tip.hide);
                     return this;
                 }
             }
@@ -167,6 +193,9 @@ for (i = 0; i < dataset.length; i++) {
     charts.push(chart)
     charts[i].on('drag', function(d){
             this.draw([d]);
+            console.log(i);
+            console.log(d.val);
+            events.updateInputValues(d.name, d.val);
         })
     chart.draw([dataset[i]]);
 }
