@@ -67,9 +67,10 @@ initYscales();
 $(".field input").each(function(i) {
     var id = "#" + $(this).attr("id");
     d3.select(id).on("input", function() {
-        update(this.value, i);
+        update(this.value, i);  //updates field value
+        events.sliderValueChange(); //updates risk slider
     });
-    d3.select(id).property("value", dataset[i].val); //initially updates value in input field upon page load
+    d3.select(id).property("value", dataset[i].val); //initially sets value in input field upon page load
 });
 
 // adjust the text
@@ -98,13 +99,6 @@ maxAxis.attr('class', 'axis')
 //     xScale([i])
 // }
 
-
-// //  % Risk Slider
-// var slider = d3.slider().on("slide", function(evt, value) {
-//     d3.select('#slider4text').text(value);
-// })
-// d3.select('#slider')
-//     .call(slider);
 
 
 

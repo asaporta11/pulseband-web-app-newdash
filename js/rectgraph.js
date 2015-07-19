@@ -48,7 +48,7 @@ d3.chart("rectGraph", {
                         })
                         .on("drag", function(d) {
                             events.sliderValueChange();
-                            d.val = chart.yScale.invert(d3.mouse(this)[1]);
+                            d.val = chart.yScale.invert(d3.mouse(this)[1]); //changing dataset to reflect new value
                             chart.trigger('drag', d);        
                         });
 
@@ -147,8 +147,8 @@ d3.chart("rectGraph", {
                         .attr("height", function(d) {
                             return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
                         })
-                        .style('opacity', 0.2)
-                        .style('fill', 'green'); 
+                        .style('opacity', 0.19)
+                        .style('fill', '#2dcc06'); 
                     return this;
                     // height: function(d){ return chart._height - margins.bottom - chart.yScale(d.healthyMin)};
                 }

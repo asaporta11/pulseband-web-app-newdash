@@ -9,7 +9,6 @@ var events = {
     svgSlide.draw([events.getRiskValue()]);
   },
   getRiskValue: function(){
-
     var percentOfSelf;
     var cumulativeSum = 0; 
     var averageRisk;
