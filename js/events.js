@@ -6,7 +6,7 @@ var events = {
     $('#'+ name).val(roundedInputY);
   },
   sliderValueChange: function(){
-    slider.value(events.getRiskValue());
+    svgSlide.draw([events.getRiskValue()]);
   },
   getRiskValue: function(){
 
