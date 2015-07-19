@@ -6,7 +6,7 @@ d3.chart("slider", {
         chart.sliderxScale = d3.scale.linear()
             .domain([0,100]);
 
-        var rectGroup = this.base.append('g');
+        var rectGroup = this.base.append('g'); //assuming this is svg:svg (for gradient purposes)
         var sliderGroup = this.base.append('g'); 
         var textGroup = this.base.append('g'); 
 
@@ -21,10 +21,9 @@ d3.chart("slider", {
                     .attr('transform', 'translate('+ 0 +', 12)');
                 group.append('path')
                     .attr("d", d3.svg.symbol().type('triangle-down'))
-                    .style('fill', 'white')
+                    .style('fill', 'black')
                     .style('stroke', 'black')
                     .style('stroke-width', 1);
-
                 return this;  
             },
             events: {
@@ -33,7 +32,6 @@ d3.chart("slider", {
                     this.transition()
                         .ease('linear')
                         .attr('transform', function(d) {
-                            console.log(d);
                             return 'translate('+ chart.sliderxScale(d) +', 12)';
                         })
                     return this;
@@ -73,15 +71,34 @@ d3.chart("slider", {
         };
 
         function drawRectangles(){
+            var gradient = rectGroup.append("svg:defs")
+                .append("svg:linearGradient")
+                .attr("id", "gradient")
+                .attr("spreadMethod", "pad");
+
+            gradient.append("svg:stop")
+                .attr("offset", "0%")
+                .attr("stop-color", "green")
+                .attr("stop-opacity", 1);
+
+            gradient.append("svg:stop")
+                .attr("offset", "50%")
+                .attr("stop-color", "yellow")
+                .attr("stop-opacity", 1);    
+
+            gradient.append("svg:stop")
+                .attr("offset", "100%")
+                .attr("stop-color", "red")
+                .attr("stop-opacity", 1);
+
             rectGroup.append('rect')
                 .attr('y', slideTriHeight)
                 .attr('x', 0)
                 .attr('width', chart._width)
                 .attr('height', chart._height - slideTriHeight)
-                .style('stroke', 'black')
-                .style('stroke-width', 1); 
-
-
+                // .style('stroke', 'black')
+                // .style('stroke-width', 1)
+                .style("fill", "url(#gradient)");       
         }
     },
 

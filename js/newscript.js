@@ -90,6 +90,15 @@ maxAxis.attr('class', 'axis')
         .scale(max_xScale)
         .orient('top'));
 
+// d3.select('.field')
+//     .html()
+//     .style('left', xScale(0) + 'px')
+
+// for(var i = 0; i < dataset.length; i++){
+//     xScale([i])
+// }
+
+
 // //  % Risk Slider
 // var slider = d3.slider().on("slide", function(evt, value) {
 //     d3.select('#slider4text').text(value);

@@ -2,11 +2,14 @@ d3.chart("rectGraph", {
     initialize: function() {
         var chart = this;
         var firstDraw = true; //to make it transition on first load but not again 
+        var healthyBase = this.base.append('g');
+        var rectBase = this.base.append('g');
+
         chart.yScale = d3.scale.linear();
 
         // create a layer of circles that will go into
         // a new group element on the base of the chart
-        chart.layer("rectGroup", this.base, {
+        chart.layer("rectGroup", rectBase, {
 
             // select the elements we wish to bind to and
             // bind the data to them.
@@ -19,8 +22,8 @@ d3.chart("rectGraph", {
                 var group = this.append('g')
                     .classed('containBar', true);
                 group.append('rect')
-                    .attr("x", 0) //x pos set to 0 for each chart
-                    .attr("width", chart._width)
+                    .attr("x", chart._width*0.1) //x pos set to 0 for each chart
+                    .attr("width", chart._width*0.8)
                     .attr("y", chart._height - margins.bottom) //set y value to 0 on axis
                     .attr("height", 0); //set height to 0 (state before transition)
 
@@ -28,7 +31,7 @@ d3.chart("rectGraph", {
                     .classed('topBarGroup', true)
                     .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")");
                 lineTextGroup.append('line');
-                lineTextGroup.append('text')    
+                lineTextGroup.append('text');    
                 return this;  
             },
 
@@ -107,6 +110,34 @@ d3.chart("rectGraph", {
                         .attr('fill', "black") 
 
                     this.call(drag);
+                    return this;
+                }
+            }
+        });
+        chart.layer("healthyGroup", healthyBase, {  
+
+            // select the elements we wish to bind to and
+            // bind the data to them.
+            dataBind: function(data) {
+                return this.selectAll('g.healthy').data(data);
+            },
+
+            // insert actual bars, and group containing both the line and text at the top of each bar 
+            insert: function() {
+                var group = this.append('g')
+                    .classed('healthy', true)
+                    .append('line');
+                    
+  
+                return this;  
+            },
+
+            // define lifecycle events
+            events: {
+                // paint new elements
+                "merge": function() {
+                    //for draggable beh
+                    
                     return this;
                 }
             }
