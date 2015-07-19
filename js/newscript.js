@@ -1,6 +1,6 @@
 var svgWidth = parseInt($('#bar-chart').css('width'));
 var svgHeight = 420;
-var sliderHeight = 20;
+var sliderHeight = 23;
 
 var svg = d3.select('#bar-chart').append('svg')
     .attr('width', '100%')
