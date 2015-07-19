@@ -31,7 +31,9 @@ d3.chart("rectGraph", {
                     .classed('topBarGroup', true)
                     .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")");
                 lineTextGroup.append('line');
-                lineTextGroup.append('text');    
+                lineTextGroup.append('text');  
+
+
                 return this;  
             },
 
@@ -107,7 +109,7 @@ d3.chart("rectGraph", {
                             return parseInt(d.val) +" "+d.unit+"";
                         })  
                         .style('text-anchor', 'middle')
-                        .attr('fill', "black") 
+                        .attr('fill', "black");     
 
                     this.call(drag);
                     return this;
@@ -125,10 +127,12 @@ d3.chart("rectGraph", {
             // insert actual bars, and group containing both the line and text at the top of each bar 
             insert: function() {
                 var group = this.append('g')
-                    .classed('healthy', true)
-                    .append('line');
-                    
-  
+                    .classed('healthyRange', true);
+
+                group.append('rect')
+                    .attr("x", chart._width*0.01) 
+                    .attr("width", chart._width);
+
                 return this;  
             },
 
@@ -136,9 +140,17 @@ d3.chart("rectGraph", {
             events: {
                 // paint new elements
                 "merge": function() {
-                    //for draggable beh
-                    
+                    healthyRectSelection = this.select('rect')
+                    healthyRectSelection.attr("y", function(d) {
+                            return chart.yScale(d.healthyMax); 
+                        })
+                        .attr("height", function(d) {
+                            return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
+                        })
+                        .style('opacity', 0.2)
+                        .style('fill', 'green'); 
                     return this;
+                    // height: function(d){ return chart._height - margins.bottom - chart.yScale(d.healthyMin)};
                 }
             }
         });

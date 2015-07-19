@@ -63,7 +63,7 @@ d3.chart("slider", {
                 }
             }
         });
-
+        //needs to be before the draw rectangles
         chart.transform = function(data) {
             chart.sliderxScale.range([0, chart._width]);
             drawRectangles();
