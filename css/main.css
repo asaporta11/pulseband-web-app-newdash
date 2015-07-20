@@ -82,6 +82,30 @@ h1{
 } 
 
 /**   Graph   **/
+div .instructions{
+/*	background-color: #fff;*/
+	position: relative;
+	width: 900px;
+	height: 120px;
+	display: inline-block;
+	float: left;
+	margin-left: 70px;
+	text-align: center;
+/*	color: #000;*/
+/*	border-radius: 6px;
+	border: 2px solid #09bcd3;*/
+}
+div .instructions p{
+	font-size: 20px;
+	margin: 10px;
+	margin-bottom: 15px;
+}
+div .instructions p.subtext{
+	font-size: 14px;
+	margin: 10px;
+}
+
+/**   Graph   **/
 .data-date{
 	text-align: center;
 	margin-top: 5px;
@@ -159,7 +183,6 @@ div .key-container{
 	background-color: #2dcc06;
 	opacity: 0.2;
 	position: absolute;
-	margin: 0 auto;
 }
 div .key-container p{
 	padding: 3px;

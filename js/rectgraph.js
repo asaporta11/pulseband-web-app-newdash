@@ -32,6 +32,8 @@ d3.chart("rectGraph", {
                     .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")");
                 lineTextGroup.append('line');
                 lineTextGroup.append('text');  
+
+
                 return this;  
             },
 
