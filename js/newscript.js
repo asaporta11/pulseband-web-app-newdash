@@ -91,10 +91,10 @@ maxAxis.attr('class', 'axis')
     .scale(max_xScale)
     .orient('top'));
 
-//position input fields
+// //position input fields
 // $('.field').each(function(i){
 //     this.style.position = 'absolute';
-//     this.style.left = xScale[i] + 'px';
+//     this.style.left = xScale(0) + 'px';
     
 // });
 

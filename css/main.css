@@ -175,19 +175,21 @@ svg text{
 	cursor: -webkit-zoom-grab;
 /*	cursor: -webkit-zoom-grabbing;*/
 	cursor: grab;
+/*	fill: #fff;*/
 }
 
 div .key-container{
 	width: 80px;
 	height: 40px;
-	background-color: #2dcc06;
-	opacity: 0.2;
+	background-color: rgba(45, 204, 6, 0.2);
 	position: absolute;
+	right:10px;
+	top:100px;
 }
 div .key-container p{
 	padding: 3px;
-	color: #000;
 	font-size: 16px;
+	color: rgba(0, 0, 0, 1);
 }
 
 div .key-container .key-square{

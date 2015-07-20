@@ -33,7 +33,6 @@ d3.chart("rectGraph", {
                 lineTextGroup.append('line');
                 lineTextGroup.append('text');  
 
-
                 return this;  
             },
 
@@ -125,8 +124,15 @@ d3.chart("rectGraph", {
 
                 group.append('rect')
                     .attr("x", chart._width*0.01) 
-                    .attr("width", chart._width);
-
+                    .attr("width", chart._width)
+                    .attr("y", function(d) {
+                            return chart.yScale(d.healthyMax);
+                        })
+                        .attr("height", function(d) {
+                            return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
+                        })
+                        .style('opacity', 0.15)
+                        .style('fill', '#2dcc06');
                 return this;  
             },
 
@@ -134,15 +140,15 @@ d3.chart("rectGraph", {
             events: {
                 // paint new elements
                 "merge": function() {
-                    healthyRectSelection = this.select('rect')
-                    healthyRectSelection.attr("y", function(d) {
-                            return chart.yScale(d.healthyMax); 
-                        })
-                        .attr("height", function(d) {
-                            return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
-                        })
-                        .style('opacity', 0.1)
-                        .style('fill', '#2dcc06'); 
+                    // healthyRectSelection = this.select('rect')
+                    // healthyRectSelection.attr("y", function(d) {
+                    //         return chart.yScale(d.healthyMax); 
+                    //     })
+                    //     .attr("height", function(d) {
+                    //         return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
+                    //     })
+                    //     .style('opacity', 0.1)
+                    //     .style('fill', '#2dcc06'); 
                     return this;
                 }
             }
