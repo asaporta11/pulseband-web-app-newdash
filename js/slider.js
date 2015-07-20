@@ -33,7 +33,7 @@ d3.chart("slider", {
                         .ease('linear')
                         .attr('transform', function(d) {
                             return 'translate('+ chart.sliderxScale(d) +', 12)';
-                        })
+                        });
                     return this;
                 }
             }
@@ -57,8 +57,12 @@ d3.chart("slider", {
                 "merge": function() {
                     this.select('text')
                         .text(function(d){
-                            return d;
-                        });
+                            return d + '% Risk';
+                        })
+                        .attr('y', -1)
+                        .attr('font-size', '50px')
+                        .attr('font-weight', 'bold');
+
                     return this;
                 }
             }

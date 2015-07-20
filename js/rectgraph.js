@@ -32,8 +32,6 @@ d3.chart("rectGraph", {
                     .attr('transform', "translate(0,"+ (svgHeight - margins.bottom) +")");
                 lineTextGroup.append('line');
                 lineTextGroup.append('text');  
-
-
                 return this;  
             },
 
@@ -49,24 +47,18 @@ d3.chart("rectGraph", {
                         .on("drag", function(d) {
                             events.sliderValueChange();
                             d.val = chart.yScale.invert(d3.mouse(this)[1]); //changing dataset to reflect new value
-                            chart.trigger('drag', d);        
+                            chart.trigger('drag', d);   
                         });
 
                     if(firstDraw){ //if firstDraw is true will initiate loop
                         rectSelection = this.select('rect')
                             .transition() //initiates transition for rects
-                            .delay(function(data, i) {
-                                return i * 20;
-                            })
                             .duration(2000)
                             .ease("elastic");
 
                         //top bar group contains the line and text at the top of each bar 
                         topBarSelection = this.select('.topBarGroup')
                             .transition()
-                            .delay(function(d, i) {
-                                return i * 20;
-                            })
                             .duration(2000)
                             .ease("elastic");
                                 
@@ -147,10 +139,9 @@ d3.chart("rectGraph", {
                         .attr("height", function(d) {
                             return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
                         })
-                        .style('opacity', 0.19)
+                        .style('opacity', 0.1)
                         .style('fill', '#2dcc06'); 
                     return this;
-                    // height: function(d){ return chart._height - margins.bottom - chart.yScale(d.healthyMin)};
                 }
             }
         });

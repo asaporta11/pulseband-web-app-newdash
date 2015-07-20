@@ -146,6 +146,34 @@ svg text{
 #bar-chart svg g g rect {
 	position: relative;
 }
+
+#bar-chart svg .rect g .containBar rect:hover{
+	cursor: -webkit-zoom-grab;
+/*	cursor: -webkit-zoom-grabbing;*/
+	cursor: grab;
+}
+
+div .key-container{
+	width: 80px;
+	height: 40px;
+	background-color: #2dcc06;
+	opacity: 0.2;
+	position: absolute;
+	margin: 0 auto;
+}
+div .key-container p{
+	padding: 3px;
+	color: #000;
+	font-size: 16px;
+}
+
+div .key-container .key-square{
+	width: 30px;
+	height: 30px;
+	background-color: #2dcc06;
+	position: absolute;
+	z-index: 1000000;
+}
 /*#bar-chart svg g g rect:before{
 	content: ' ';
 	position: absolute;

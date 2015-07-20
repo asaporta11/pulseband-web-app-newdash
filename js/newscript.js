@@ -88,8 +88,14 @@ var max_xScale = xScale.domain(dataset.map(function(d) {
 maxAxis.attr('class', 'axis')
     .attr('transform', 'translate(0,' + (margins.top - 10) + ')')
     .call(d3.svg.axis()
-        .scale(max_xScale)
-        .orient('top'));
+    .scale(max_xScale)
+    .orient('top'));
+
+// //position input fields
+// $('.field').each(function(i){
+    
+// });
+
 
 // d3.select('.field')
 //     .html()
