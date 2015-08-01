@@ -120,37 +120,27 @@ d3.chart("rectGraph", {
             // insert actual bars, and group containing both the line and text at the top of each bar 
             insert: function() {
                 var group = this.append('g')
-                    .classed('healthyRange', true);
+                    .classed('healthy', true);
 
                 group.append('rect')
                     .attr("x", chart._width*0.01) 
                     .attr("width", chart._width)
                     .attr("y", function(d) {
                             return chart.yScale(d.healthyMax);
-                        })
-                        .attr("height", function(d) {
+                    })
+                    .attr("height", function(d) {
                             return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
-                        })
-                        .style('opacity', 0.15)
-                        .style('fill', '#2dcc06');
-                return this;  
-            },
+                    })
+                    .style('fill', '#ddf9cd');
 
-            // define lifecycle events
-            events: {
-                // paint new elements
-                "merge": function() {
-                    // healthyRectSelection = this.select('rect')
-                    // healthyRectSelection.attr("y", function(d) {
-                    //         return chart.yScale(d.healthyMax); 
-                    //     })
-                    //     .attr("height", function(d) {
-                    //         return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
-                    //     })
-                    //     .style('opacity', 0.1)
-                    //     .style('fill', '#2dcc06'); 
-                    return this;
-                }
+                group.append('text')
+                    .attr('x', chart._width/2)
+                    .attr('y', function(d) {
+                            return chart.yScale(d.healthyMax) ;
+                    })
+                    .text('Healthy Range');
+
+                return this;  
             }
         });
     },

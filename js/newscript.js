@@ -63,16 +63,6 @@ function initYscales() {
 }
 initYscales();
 
-//sets input values and updates field as user increments up/down
-$(".field input").each(function(i) {
-    var id = "#" + $(this).attr("id");
-    d3.select(id).on("input", function() {
-        update(this.value, i);  //updates field value
-        events.sliderValueChange(); //updates risk slider
-    });
-    d3.select(id).property("value", dataset[i].val); //initially sets value in input field upon page load
-});
-
 // adjust the text
 function update(nValue, index) {
     dataset[index].val = nValue;
@@ -91,21 +81,35 @@ maxAxis.attr('class', 'axis')
     .scale(max_xScale)
     .orient('top'));
 
-// //position input fields
-// $('.field').each(function(i){
-//     this.style.position = 'absolute';
-//     this.style.left = xScale(0) + 'px';
-    
-// });
+// Make and position input fields 
+var inputContainer = d3.select('#input-field');
+inputContainer.selectAll('input')
+    .data(dataset)
+    .enter()
+    .append('input')
+    .classed('field', true)
+    .attr({ 
+        'id': function(d){
+            return d.name.replace(/\s/g, '');
+        },
+        'type': 'number',
+        'min': 0,
+        'max': function(d){
+            return d.max;
+        },
+        'step': function(d){
+            return d.step;
+        },
+        'value': function(d){
+            return d.val;
+        }, 
+    })
+    .style('width', xScale.rangeBand() + 'px') //sets width of input
+    .on('change', function(d, i){
+        update(this.value, i);  //updates field value
+        events.sliderValueChange(); //updates risk slider
+    })
 
-
-// d3.select('.field')
-//     .html()
-//     .style('left', xScale(0) + 'px')
-
-// for(var i = 0; i < dataset.length; i++){
-//     xScale([i])
-// }
 
 
 
