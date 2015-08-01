@@ -82,6 +82,19 @@ h1{
 } 
 
 /**   Graph   **/
+
+/* position inputs */
+input.field{
+	display: inline;
+	text-align: right;
+}
+
+#input-field{
+	padding-left: 10px;
+}
+
+
+
 div .instructions{
 /*	background-color: #fff;*/
 	position: relative;
@@ -114,7 +127,7 @@ div .instructions p.subtext{
 	background-color: #fff;
 	position: relative;
 	width: 900px;
-	height: 500px;
+/*	height: 500px;*/
 	display: inline-block;
 	float: left;
 	margin-left: 70px;

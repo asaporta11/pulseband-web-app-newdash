@@ -2,9 +2,12 @@ var svgWidth = parseInt($('#bar-chart').css('width'));
 var svgHeight = 420;
 var sliderHeight = 23;
 
-var svg = d3.select('#bar-chart').append('svg')
+var svg = d3.select('svg')
     .attr('width', '100%')
     .attr('height', svgHeight);
+// var svg = d3.select('#bar-chart').append('svg')
+//     .attr('width', '100%')
+//     .attr('height', svgHeight);
 var svgSlide = d3.select('#slider').append('svg')
     .attr('width', 718)
     .attr('height', sliderHeight)
@@ -21,7 +24,7 @@ var maxAxis = svg.append('g');
 xScale.domain(dataset.map(function(d) {
     return d.name;
 }))
-    .rangeBands([margins.left, (svgWidth - margins.right)], .1);
+    .rangeBands([margins.left, (svgWidth - margins.right)], .1, 0); //padding is .1 and outer padding is 0 
 
 xAxis.attr('class', 'axis')
     .attr('transform', 'translate(0,' + (svgHeight - margins.bottom) + ')')
@@ -70,7 +73,8 @@ function update(nValue, index) {
 }
 
 //max axis at top 
-var max_xScale = xScale.domain(dataset.map(function(d) {
+var max_xScale = d3.scale.ordinal()
+    .domain(dataset.map(function(d) {
         return 'max: ' + d.max;
     }))
     .rangeBands([margins.left, (svgWidth - margins.right)], .1);
@@ -81,7 +85,9 @@ maxAxis.attr('class', 'axis')
     .scale(max_xScale)
     .orient('top'));
 
-// Make and position input fields 
+// Make input fields
+var inputMargin = svgWidth*0.1/(dataset.length-1);
+
 var inputContainer = d3.select('#input-field');
 inputContainer.selectAll('input')
     .data(dataset)
@@ -104,11 +110,24 @@ inputContainer.selectAll('input')
             return d.val;
         }, 
     })
-    .style('width', xScale.rangeBand() + 'px') //sets width of input
-    .on('change', function(d, i){
+    .style({
+        'width': xScale.rangeBand()*0.8-2 + 'px',
+        'margin-top': '10px', 
+        'margin-bottom': '10px',
+        'margin-right': inputMargin*2 + 'px'
+        // 'margin-left': inputMargin + 'px'   
+    }) //sets width of input
+    .on('input', function(d, i){
         update(this.value, i);  //updates field value
         events.sliderValueChange(); //updates risk slider
-    })
+    });
+
+//Position input fields 
+d3.select('#input-field')
+    .style('margin-left', xScale(dataset[0].name) + 'px');
+
+
+
 
 
 
