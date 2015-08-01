@@ -74,6 +74,17 @@ d3.chart("rectGraph", {
                         })
                         .attr("height", function(d) {
                             return chart._height - margins.bottom - chart.yScale(d.val); //specifies height value to transition to 
+                        })
+                        .style('fill', function(d){
+                            if (d.val < d.healthyMin) {
+                                return 'blue';
+                            }else if(d.val < d.healthyMax){
+                                return 'green';
+                            }else if(d.val < d.danger){
+                                return 'yellow';
+                            }else{
+                                return 'red';
+                            }
                         }); 
 
                     topBarSelection.attr('transform', function(d) { 
@@ -129,7 +140,7 @@ d3.chart("rectGraph", {
                             return chart.yScale(d.healthyMax);
                     })
                     .attr("height", function(d) {
-                            return chart._height - margins.bottom - chart.yScale(d.healthyRange); //specifies height value to transition to 
+                            return chart._height - margins.bottom - chart.yScale(d.healthyMax - d.healthyMin); //specifies height value to transition to 
                     })
                     .style('fill', '#ddf9cd');
 
