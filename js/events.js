@@ -18,5 +18,9 @@ var events = {
     }
     averageRisk = cumulativeSum / dataset.length * 100;
     return Math.round(averageRisk);
-  } 
+  }, 
+  drawGraph: function(d) {
+    this.draw([d]);
+    events.updateInputValues(d.name, d.val);
+  }
 }
