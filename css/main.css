@@ -57,6 +57,7 @@ nav ul li a{
 /********   DASH PAGE   ********/
 body{
 	background-color: #F3f3f3;
+	margin: 0;
 }
 h1{
 	text-align: center;
@@ -93,29 +94,26 @@ input.field{
 	padding-left: 10px;
 }
 
-
-
 div .instructions{
 /*	background-color: #fff;*/
 	position: relative;
 	width: 900px;
-	height: 120px;
 	display: inline-block;
 	float: left;
-	margin-left: 70px;
-	text-align: center;
+	margin-left: 10px;
+	text-align: left;
 /*	color: #000;*/
 /*	border-radius: 6px;
 	border: 2px solid #09bcd3;*/
 }
 div .instructions p{
-	font-size: 20px;
-	margin: 10px;
-	margin-bottom: 15px;
+	font-size: 16px;
+	margin: 3px;
+	margin-bottom: 3px;
 }
 div .instructions p.subtext{
 	font-size: 14px;
-	margin: 10px;
+	margin-bottom: 5px;
 }
 
 /**   Graph   **/
@@ -130,7 +128,7 @@ div .instructions p.subtext{
 /*	height: 500px;*/
 	display: inline-block;
 	float: left;
-	margin-left: 70px;
+	margin-left: 10px;
 	color: #000;
 	border-radius: 6px;
 	border: 2px solid #09bcd3;

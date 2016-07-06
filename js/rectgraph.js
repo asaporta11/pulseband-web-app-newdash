@@ -77,13 +77,13 @@ d3.chart("rectGraph", {
                         })
                         .style('fill', function(d){
                             if (d.val < d.healthyMin) {
-                                return 'blue';
+                                return d3.rgb('#01B4F6'); //blue
                             }else if(d.val < d.healthyMax){
-                                return 'green';
+                                return d3.rgb('#20AF5D'); //green
                             }else if(d.val < d.danger){
-                                return 'yellow';
+                                return d3.rgb('#ECCE01'); //yellow
                             }else{
-                                return 'red';
+                                return d3.rgb('#E9271D'); //red
                             }
                         }); 
 
@@ -133,23 +133,23 @@ d3.chart("rectGraph", {
                 var group = this.append('g')
                     .classed('healthy', true);
 
-                group.append('rect')
-                    .attr("x", chart._width*0.01) 
-                    .attr("width", chart._width)
-                    .attr("y", function(d) {
-                            return chart.yScale(d.healthyMax);
-                    })
-                    .attr("height", function(d) {
-                            return chart._height - margins.bottom - chart.yScale(d.healthyMax - d.healthyMin); //specifies height value to transition to 
-                    })
-                    .style('fill', '#ddf9cd');
+                // group.append('rect')
+                //     .attr("x", chart._width*0.01) 
+                //     .attr("width", chart._width)
+                //     .attr("y", function(d) {
+                //             return chart.yScale(d.healthyMax);
+                //     })
+                //     .attr("height", function(d) {
+                //             return chart._height - margins.bottom - chart.yScale(d.healthyMax - d.healthyMin); //specifies height value to transition to 
+                //     })
+                //     .style('fill', '#ddf9cd');
 
-                group.append('text')
-                    .attr('x', chart._width/2)
-                    .attr('y', function(d) {
-                            return chart.yScale(d.healthyMax) ;
-                    })
-                    .text('Healthy Range');
+                // group.append('text')
+                //     .attr('x', chart._width/2)
+                //     .attr('y', function(d) {
+                //             return chart.yScale(d.healthyMax) ;
+                //     })
+                //     .text('Healthy Range');
 
                 return this;  
             }

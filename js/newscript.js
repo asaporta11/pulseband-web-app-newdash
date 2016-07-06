@@ -1,6 +1,11 @@
 var svgWidth = parseInt($('#bar-chart').css('width'));
-var svgHeight = 420;
-var sliderHeight = 23;
+var svgHeight = 460;
+var sliderHeight = 33;
+var sliderWidth = 718;
+
+// var svgWidth = parseInt($('#bar-chart').css('width'));
+// var svgHeight = 420;
+// var sliderHeight = 23;
 
 var svg = d3.select('svg')
     .attr('width', '100%')
@@ -9,10 +14,10 @@ var svg = d3.select('svg')
 //     .attr('width', '100%')
 //     .attr('height', svgHeight);
 var svgSlide = d3.select('#slider').append('svg')
-    .attr('width', 718)
+    .attr('width', sliderWidth)
     .attr('height', sliderHeight)
     .chart('slider')
-    .width(718) //chart width
+    .width(sliderWidth) //chart width
     .height(sliderHeight); //chart height
 
 var xAxis = svg.append('g');
@@ -110,9 +115,8 @@ inputContainer.selectAll('input')
     .style({
         'width': xScale.rangeBand() * 0.8 - 2 + 'px',
         'margin-top': '10px',
-        'margin-bottom': '10px',
-        'margin-right': inputMargin * 2 + 'px'
-        // 'margin-left': inputMargin + 'px'   
+        'margin-bottom': '40px',
+        'margin-right': inputMargin * 2 + 'px'   
     }) //sets width of input
 .on('input', function(d, i) {
     update(this.value, i); //updates field value
@@ -122,3 +126,4 @@ inputContainer.selectAll('input')
 //Position input fields 
 d3.select('#input-field')
     .style('margin-left', xScale(dataset[0].name) + 'px');
+

@@ -23,7 +23,13 @@ d3.chart("slider", {
                     .attr("d", d3.svg.symbol().type('triangle-down'))
                     .style('fill', 'black')
                     .style('stroke', 'black')
-                    .style('stroke-width', 1);
+                    .style('stroke-width', 1)
+                    .text(function(d){
+                        return d + '% Risk';
+                    })
+                    .attr('y', -1)
+                    .attr('font-size', '50px')
+                    .attr('font-weight', 'bold');
                 return this;  
             },
             events: {
@@ -82,17 +88,17 @@ d3.chart("slider", {
 
             gradient.append("svg:stop")
                 .attr("offset", "0%")
-                .attr("stop-color", "green")
+                .attr("stop-color", d3.rgb('#20AF5D'))
                 .attr("stop-opacity", 1);
 
             gradient.append("svg:stop")
                 .attr("offset", "50%")
-                .attr("stop-color", "yellow")
+                .attr("stop-color", d3.rgb('#ECCE01'))
                 .attr("stop-opacity", 1);    
 
             gradient.append("svg:stop")
                 .attr("offset", "100%")
-                .attr("stop-color", "red")
+                .attr("stop-color", d3.rgb('#E9271D'))
                 .attr("stop-opacity", 1);
 
             rectGroup.append('rect')
@@ -100,8 +106,6 @@ d3.chart("slider", {
                 .attr('x', 0)
                 .attr('width', chart._width)
                 .attr('height', chart._height - slideTriHeight)
-                // .style('stroke', 'black')
-                // .style('stroke-width', 1)
                 .style("fill", "url(#gradient)");       
         }
     },

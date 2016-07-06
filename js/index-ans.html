@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>Spotify Artist Discovery</title>
+  <link href="css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+  <link href="css/animate.min.css" type="text/css" rel="stylesheet">
+  <link href="css/main.min.css" type="text/css" rel="stylesheet">
+
+  <!-- to add to Abe's code -->
+  <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+  <script src="js/jquery.min.js"></script>
+  <script src="vendors/jquery-ui-1.11.4.custom/jquery-ui.min.css"></script>
+  <script src="vendors/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  <script src="vendors/jquery-ui-1.11.4.custom/jquery-ui.structure.min.css"></script>
+  <script src="vendors/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css"></script>
+
+  <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.11.4.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
+
+  <style>
+.row33 {
+  border: 1px solid red;
+}
+.col33 {
+  border: 1px solid blue;
+}
+
+
+
+.valign-demo {
+  border: 1px solid blue;
+
+}
+
+
+.modal-header.brand-success {
+  background-color: #5cb85c;
+  color: #fff;
+  padding: 15px;
+}
+
+.modal-body {
+  position: relative;
+  padding: 15px;
+}
+
+
+.modal {
+  padding: 0;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+.modal-footer {
+  margin-top: 15px;
+  padding: 14px 15px 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.card-panel {
+  padding: 0;
+}
+
+.card-panel-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+.card-panel-footer {
+  margin-top: 5px;
+  padding: 14px 15px 15px;
+  text-align: right;
+}
+.card-panel-header {
+  background-color: rgba(0,0,0,.9) !important;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  color: #fff;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.card-panel-body {
+  position: relative;
+  padding: 20px;
+}
+
+
+.card-panel-title i.mdi-action-search {
+  color: #84bd00;
+  margin-right: 30px;
+}
+
+.mdi-navigation-expand-more {
+  color: #84bd00;
+  font-size: 40px;
+}
+
+
+.hidden {
+  display: none;
+}
+
+.card .card-image {
+  height: 175px;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Ajax Modal -->
+
+<div id="ajaxmodal" class="modal">
+  <div class="modal-header brand-success">
+      <h4 class="modal-title">Log Of Ajax Calls</h4>
+  </div>
+  <div class="modal-body">
+    <p id="ajaxlog"></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary waves-effect modal-close">Close</button>
+  </div>
+</div>
+
+
+
+
+  <nav class="spotifynav" role="navigation">
+    <div class="container">
+      <div class="nav-wrapper"><img height="40" style="margin-top: 10px; margin-right: 10px;" src="images/logo-navbar.png"><a id="logo-container" href="#" class="brand-logo">Artist Discovery</a>
+        <ul id="nav-mobile" class="right side-nav">
+          <li><a href="#">Navbar Link</a></li>
+          <li><a class="waves-effect waves-light modal-trigger" href="#ajaxmodal">Ajax Log</a></li>
+          <li><a class="waves-effect waves-light modal-trigger" id="spotifylogin" href="#">Login</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+      </div>
+    </div>
+  </nav>
+
+
+
+
+<div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+    
+       <div class="row row-no-bottom-margin center hidden" id="hiddenrow">
+          <div class="col s12">
+            <a class="waves-effect waves-light btn-large" id="searchagainbutton"><i class="mdi-action-search left"></i>Search Again</a>
+         </div>
+      </div>
+
+
+       <div class="row row-no-bottom-margin">
+        <div class="col s8 offset-s2">
+          <div class="card-panel" id="searchcard"><!--start card-->
+            <div class="card-panel-header">
+                <h4 class="card-panel-title"><i class="mdi-action-search"></i> Search For An Artist</h4>
+            </div>
+             <div class="card-panel-body">
+               <div class="row row-no-bottom-margin" style="border: 0px solid red;">
+                <div class="col s9">
+                  <div class="input-field">
+                    <i class="mdi-av-my-library-music prefix"></i>
+                    <input id="txtArtistSearch" type="text">
+                    <label for="txtArtistSearch">Enter An Artist's Name</label>
+                  </div>
+                </div>
+                <div class="col s3" style="margin-top: 5px;">
+                  <button type="button" class="btn btn-primary waves-effect modal-close" id="btnsearchartists">Search</button>
+                 </div>
+              </div>
+              <div class="row row-no-bottom-margin" style="border: 0px solid red;">
+                <div class="col s12">
+                   <ul id="searchresults"></ul>
+                </div>
+              </div>
+            </div>
+          </div><!--end card-->
+
+
+        </div>
+      </div>
+
+  
+      <div id="spotifyresults">
+      <!--template data populated from API call will be inserted here-->
+      </div>
+
+    </div>
+  
+  <!-- artist name -->  
+  <h1 id="artist-name">
+  </h1>
+  <!-- picture test -->  
+  <div id="artist-picture">
+    <img id="artist-picture-test" src="">
+  </div>
+  <!-- tracks test -->  
+  <div class="col m2">
+    <ul id="top25Tracks">
+    </ul>
+  </div>
+
+  <!-- tracks test -->  
+<!--   <div class="col m2">
+    <tbody id='top10Container'>
+      <tr id="top25Tracks">
+      </tr>
+    </tbody>
+  </div> -->
+
+    <!-- bio text test -->  
+  <div class="col m2">
+    <ul id="bioText">
+    </ul>
+  </div>
+</div>
+<!-- video player test -->
+<div class="col m2" id="player-container">
+</div>
+
+
+
+
+
+<!-- <iframe id="youtube-player" type="text/html" width="640" height="385"src="http://www.youtube.com/embed/ID HERE" frameborder="0" allowfullscreen></iframe> -->
+
+
+
+
+<script id="relatedartisttemplate" type="text/x-jquery-tmpl">
+  <div class="col m2">
+    <div class="card small animated bounceInDown">
+      <div class="card-image">
+       <img src="${images[1].url}">
+      </div>
+      <div class="card-content">
+        <span class="card-title grey-text text-darken-4">${name}</span>
+      </div>
+    </div>
+  </div>
+</script>
+
+  <script id="selectedartisttemplate" type="text/x-jquery-tmpl">
+     <div class="row row-no-bottom-margin" style="margin-bottom: 0; padding-bottom: 0;">
+        <div class="col s4">&nbsp;</div>
+        <div class="col s4">
+          <div class="card animated bounceInDown">
+              <div class="card-image waves-effect waves-block waves-light"><img src="${images[0].url}"></div>
+              <div class="card-content"><span class="card-title activator grey-text text-darken-4">${name} <i class="mdi-action-info right"></i></span></div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">${name} <i class="mdi-navigation-close right"></i></span>
+                <p>ID: ${id}</p>
+                <p>Popularity: ${popularity}</p>
+                <p><a href="${href}" target="_blank">Spotify Link</a></p>
+              </div>
+          </div>
+       </div>
+        <div class="col s4">&nbsp;</div>
+      </div>
+      <div class="animated fadeIn">
+        <div class="row row-no-bottom-margin">
+          <div class="col s6 offset-s6 border-left" style="height: 50px;"></div>
+        </div>
+        <div class="row row-no-bottom-margin">
+          <div class="col s1 border-right"></div>
+          <div class="col s1 border-top"></div>
+          <div class="col s1 border-top border-right"></div>
+          <div class="col s1 border-top"></div>
+          <div class="col s1 border-top border-right"></div>
+          <div class="col s1 border-top"></div>
+          <div class="col s1 border-top border-right"></div>
+          <div class="col s1 border-top"></div>
+          <div class="col s1 border-top border-right"></div>
+          <div class="col s1 border-top"></div>
+          <div class="col s1 border-top border-right"></div>
+          <div class="col s1"></div>
+        </div>
+      </div>
+       <div class="row" id="relatedartists">
+
+
+      </div>
+      <!--
+      <div class="row row-no-bottom-margin">
+        <div class="col s1 border-right"></div>
+        <div class="col s1"></div>
+        <div class="col s1 border-right"></div>
+        <div class="col s1"></div>
+        <div class="col s1 border-right"></div>
+        <div class="col s1"></div>
+        <div class="col s1 border-right"></div>
+        <div class="col s1"></div>
+        <div class="col s1 border-right"></div>
+        <div class="col s1"></div>
+        <div class="col s1 border-right"></div>
+        <div class="col s1"></div>
+      </div>
+      -->
+      <div class="row" id="subrelated">
+        <div class="col s2" id="subrelated-0"></div>
+        <div class="col s2" id="subrelated-1"></div>
+        <div class="col s2" id="subrelated-2"></div>
+        <div class="col s2" id="subrelated-3"></div>
+        <div class="col s2" id="subrelated-4"></div>
+        <div class="col s2" id="subrelated-5"></div>
+      </div>
+  </script>
+
+
+
+
+<br><br><br><br><br>
+<br><br><br><br><br>
+
+  <footer class="spotify-green">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">asdf</p>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright-spotify">
+      <div class="container">
+      &nbsp;
+      </div>
+    </div>
+  </footer>
+
+  <!--  Scripts-->
+  <!--<script src="js/jquery.min.js"></script>-->
+  <script src="js/jquery.tmpl.min.js"></script>
+  <script src="js/typeahead.bundle.min.js"></script>
+  <script src="js/materialize.min.js"></script>
+  <script src="js/spotify-web-api.js"></script>
+  <script src="js/localstoragedb.min.js"></script>
+  <script src="js/spotifykeys.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+
+    var expiresIn = 3600;
+    var retrieved = new Date();
+  
+
+    var expires = new Date();
+    expires.setSeconds(expires.getSeconds() + expiresIn); 
+  
+
+    
+    
+    console.log('retrieved: ', retrieved);
+    console.log('expires: ', expires);
+  </script>
+
+  </body>
+</html>
